@@ -10,4 +10,4 @@ rsync -raP ~/.config/openbox/ ~/Code/dot_tt/openbox/
 now=$(date)
 cd ~/Code/dot_tt/
 git add .
-git commit -am "Auto backup on Debian '$now'"
+git commit -am "Auto backup from Debian '$now'"
