@@ -40,7 +40,7 @@
   (enable-mode-line (current-screen) h t))
 
 ;; Keep particular commands in sepparated lisp files
-(load "~/Code/personal_config/stumpwm/keybindings.lisp")
+(load "~/Code/dot_tt/stumpwm/keybindings.lisp")
 ;(load "~/.stumpwm.d/bluetooth.lisp")
 
 ;; INIT message

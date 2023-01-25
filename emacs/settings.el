@@ -130,7 +130,7 @@
 ;; yasnippet
 (setq yas-snippet-dirs
       '("~/.emacs.d/snippets"
-        "~/Code/personal_config/snippets"
+        "~/Code/dot_tt/emacs/snippets"
         ))
 
 (use-package yasnippet)
