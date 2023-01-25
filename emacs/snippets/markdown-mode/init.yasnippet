@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: rmd-init
+# key: init
+# --
+---
+author: "Manuel Teodoro Tenango"
+title: "${1:title}"
+image: ""
+draft: true
+date: `(format-time-string "%Y-%m-%d")`
+description: " "
+tags: ["Code Visuals", "database", "ggplot2", "minitutorial", "R basics", "R-dev", "R funciones", "R functions", "R maps", "R shiny", "R tips", "web-scrap", "data analysis", "emacs"]
+categories: ["R"]
+archives: ["`(format-time-string "%Y")`"]
+---
+
+\`\`\`{r setup, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+\`\`\`
+
+$0

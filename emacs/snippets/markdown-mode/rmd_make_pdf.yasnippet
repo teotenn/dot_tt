@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: rmd-make-pdf
+# key: mkpdf
+# --
+\`\`\`{r make-pdf, include=FALSE}
+library(rmarkdown)
+render("${1:title}.Rmd", "pdf_document")
+\`\`\`
+$0
