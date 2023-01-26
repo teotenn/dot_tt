@@ -3,7 +3,6 @@
              '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
-
 (eval-when-compile 
   (add-to-list 'load-path "~/.emacs.d/elpa/")
   (require 'use-package))
@@ -82,7 +81,6 @@
   :if (eq system-type 'gnu/linux)
   :config
   (setq ispell-program-name "aspell"))
-
 
 ;; Check on the go for all text-based modes (org, md, etc)
 (add-hook 'text-mode-hook 'flyspell-mode)

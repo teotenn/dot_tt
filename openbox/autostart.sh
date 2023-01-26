@@ -30,8 +30,8 @@ if [ -f /usr/bin/xdg-user-dirs-gtk-update ]; then
 fi
 
 sleep 2
-/bin/bash /home/teoten/Code/personal_config/scripts/autostart.sh 
+/bin/bash /home/teoten/Code/dot_tt/bash/scripts/autostart.sh 
 
 # /home/teoten/.guix-profile/bin/conky &
 # /home/teoten/.guix-profile/bin/conky -c /home/teoten/Code/personal_config/conky/blue-white.conkyrc & exit
-~/.guix-profile/bin/conky -q -c ~/Code/personal_config/conky/blue-white.conkyrc & ~/.guix-profile/bin/conky -q -c ~/Code/personal_config/conky/clock.conkyrc & exit
+~/.guix-profile/bin/conky -q -c ~/Code/dot_tt/conky/blue-white.conkyrc & ~/.guix-profile/bin/conky -q -c ~/Code/dot_tt/conky/clock.conkyrc & exit
