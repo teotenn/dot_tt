@@ -192,6 +192,13 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 * ESS and R
 ** ESS
 #+BEGIN_SRC emacs-lisp
+;; My lintr::linters
+(setq tt/lintr-linters
+      "lintr::linters_with_defaults(
+         line_length_linter = line_length_linter(120)
+       )"
+ )
+
 (use-package ess
   :if (eq system-type 'windows-nt)
   :init
@@ -201,6 +208,7 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
   :init
   (setq ess-style 'RStudio)
   :config
+  (setq ess-r-flymake-linters tt/lintr-linters)
   (setq ess-eval-visibly-p t) ; ESS process (print all)
   (setq ess-ask-for-ess-directory nil)
   ;; R console hook
@@ -229,15 +237,16 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 	(ess-R-fl-keyword:F&T . t)))
   )
 
+
 ;; Remove Flymake support 
-(setq ess-use-flymake nil)
+;; (setq ess-use-flymake nil)
 #+END_SRC
 
 ** Flycheck
 Documentation for [[https://lintr.r-lib.org/articles/lintr.html#the--lintr-file][the lintr "file"]]
 
 And in general for [[https://lintr.r-lib.org/index.html][lintr]] and [[https://style.tidyverse.org/index.html][RStudio style guide]]
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC
 ;; Flycheck for syntax. Not global
 (setq lintr-modifier-function "with_defaults(line_length_linter=NULL)")
 
