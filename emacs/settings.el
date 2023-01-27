@@ -141,6 +141,13 @@
      (interactive)
      (neotree-dir "c:/Users/teodorm3/Documents/Wrapper"))
 
+;; My lintr::linters
+(setq tt/lintr-linters
+      "lintr::linters_with_defaults(
+         line_length_linter = line_length_linter(120)
+       )"
+ )
+
 (use-package ess
   :if (eq system-type 'windows-nt)
   :init
@@ -150,6 +157,7 @@
   :init
   (setq ess-style 'RStudio)
   :config
+  (setq ess-r-flymake-linters tt/lintr-linters)
   (setq ess-eval-visibly-p t) ; ESS process (print all)
   (setq ess-ask-for-ess-directory nil)
   ;; R console hook
@@ -178,20 +186,9 @@
 	(ess-R-fl-keyword:F&T . t)))
   )
 
+
 ;; Remove Flymake support 
-(setq ess-use-flymake nil)
-
-;; Flycheck for syntax. Not global
-(setq lintr-modifier-function "with_defaults(line_length_linter=NULL)")
-
-(use-package flycheck
-  :config
-  (setq flycheck-lintr-linters lintr-modifier-function))
-
-(use-package flycheck
-  :if (eq system-type 'windows-nt)
-  :init
-  (setq flycheck-r-lintr-executable "C:\\Users\\teodorm3\\Bin\\R-4.2.1\\bin\\x64\\R.exe"))
+;; (setq ess-use-flymake nil)
 
 ;; R markdown
 (use-package polymode)

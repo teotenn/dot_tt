@@ -14,7 +14,7 @@
     (define-key m (kbd "f") "exec thunar")
     (define-key m (kbd "i") "exec inkscape")
     (define-key m (kbd "g") "exec gimp")
-    (define-key m (kbd "e") "exec emacsclient --create-frame")
+    (define-key m (kbd "e") "exec /home/teoten/.guix-profile/bin/emacs")
     (define-key m (kbd "RET") "exec x-terminal-emulator")
     (define-key m (kbd "b") "backup-git")
     m))
