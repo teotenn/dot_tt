@@ -12,6 +12,10 @@
   (package-install 'use-package))
 (setq use-package-always-ensure t)
 
+(setq tt/is-termux (string-match-p
+		    (rx (* nonl) "com.termux" (* nonl))
+		    (getenv "HOME")))
+
 ;; Stop the welcome screen
 (setq inhibit-startup-screen t)
 ;; Hide toolbar
@@ -68,23 +72,29 @@
 (setq change-log-default-name "CHANGELOG")
 
 ;; -----> FLYSPELL CUSTOMIZATION <----- ;;
-;; Diccionario
-(use-package flyspell
-  :defer t
-  :if (eq system-type 'windows-nt)
-  :init
-  (setenv "DICPATH" (concat (getenv "HOME") "/Library/Spelling"))
-  (setq ispell-program-name "C:\\Users\\teodorm3\\Bin\\Hunspell\\bin\\hunspell.exe"))
+ ;; Diccionario
+ (use-package flyspell
+   :defer t
+   :if (eq system-type 'windows-nt)
+   :init
+   (setenv "DICPATH" (concat (getenv "HOME") "/Library/Spelling"))
+   (setq ispell-program-name "C:\\Users\\teodorm3\\Bin\\Hunspell\\bin\\hunspell.exe"))
+
+ (use-package flyspell
+   :defer t
+   :if (eq system-type 'gnu/linux)
+   :config
+   (setq ispell-program-name "aspell"))
 
 (use-package flyspell
   :defer t
-  :if (eq system-type 'gnu/linux)
+  :if tt/is-termux
   :config
-  (setq ispell-program-name "aspell"))
+  (setq ispell-program-name (executable-find "hunspell")))
 
-;; Check on the go for all text-based modes (org, md, etc)
-(add-hook 'text-mode-hook 'flyspell-mode)
-(setq ispell-list-command "--list")
+ ;; Check on the go for all text-based modes (org, md, etc)
+ (add-hook 'text-mode-hook 'flyspell-mode)
+ (setq ispell-list-command "--list")
 
 ;; load screenshot script
 ;; cloned from https://github.com/tecosaur/screenshot
@@ -373,47 +383,6 @@
        (propertize (format " (%s, %s)" words chars)
                    'face `(:height 0.9))))))
 
-(defun custom-modeline-flycheck-status ()
-  (let* ((text (pcase flycheck-last-status-change
-                (`finished (if flycheck-current-errors
-                               (let ((count (let-alist (flycheck-count-errors flycheck-current-errors)
-                                              (+ (or .warning 0) (or .error 0)))))
-                                 (format
-				  (concat (all-the-icons-faicon "ban" 
-								:height 0.9
-								:v-adjust -0.0 
-								:face 'all-the-icons-red)
-					  " %sx")
-				  ;;"✖ %sx " 
-				  count (unless (eq 1 count) "")))
-                             "✔"))
-                (`running     (all-the-icons-octicon "sync" 
-						     :height 1.1
-						     :v-adjust -0.0 
-						     :face 'all-the-icons-blue))
-                (`no-checker  (all-the-icons-faicon "eye-slash" 
-						      :height 1.1
-						      :v-adjust -0.0 
-						      :face 'all-the-icons-orange))
-                (`not-checked (all-the-icons-faicon "bell-slash" 
-						    :height 0.7
-						    :v-adjust -0.0))
-                (`errored (all-the-icons-octicon "alert" 
-						 :height 0.8
-						 :v-adjust -0.0 
-						 :face 'all-the-icons-orange))
-                (`interrupted (all-the-icons-octicon "stop" 
-						     :height 0.8
-						     :v-adjust -0.0 
-						     :face 'all-the-icons-orange))
-                (`suspicious  (all-the-icons-faicon "commenting-o" 
-						    :height 0.9
-						    :v-adjust -0.0)))))
-     (propertize text
-                 'help-echo "Show Flycheck Errors"
-                 'mouse-face '(:box 1)
-                 'local-map (make-mode-line-mouse-map
-                             'mouse-1 (lambda () (interactive) (flycheck-list-errors))))))
 
 ;; version control NOT SO GOOD
 (defun -custom-modeline-github-vc ()
@@ -444,8 +413,6 @@
 ;; The formatter
 (setq-default mode-line-format
       (list
-       " "
-	'(:eval (custom-modeline-flycheck-status))
 	" "
 	;; Buffer modified
 	'(:eval (if (buffer-modified-p)
