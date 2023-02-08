@@ -52,7 +52,7 @@
       coding-system-for-write 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8)
+;; (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
 
@@ -148,9 +148,14 @@
        )"
  )
 
+(use-package flymake
+  :config
+  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
+
 (use-package ess
   :if (eq system-type 'windows-nt)
   :init
+  (setq ess-use-flymake nil)
   (setq inferior-ess-r-program "C:/Users/teodorm3/Bin/R-4.2.1/bin/R.exe"))
 
 (use-package ess
@@ -186,9 +191,22 @@
 	(ess-R-fl-keyword:F&T . t)))
   )
 
-
 ;; Remove Flymake support 
 ;; (setq ess-use-flymake nil)
+
+;; Flycheck for syntax. Not global
+;;(setq lintr-modifier-function "with_defaults(line_length_linter=NULL)")
+
+;; (use-package flycheck
+;;   :config
+;;   (setq flycheck-lintr-linters tt/lintr-linters))
+
+(use-package flycheck
+  :if (eq system-type 'windows-nt)
+  :init
+  (setq flycheck-r-lintr-executable "C:\\Users\\teodorm3\\Bin\\R-4.2.1\\bin\\x64\\R.exe")
+  :config
+  (setq flycheck-lintr-linters "linters_with_defaults(line_length_linter = line_length_linter(120))"))
 
 ;; R markdown
 (use-package polymode)
@@ -265,6 +283,15 @@
 
 ;; org clock format
 (setq org-duration-format (quote h:mm))
+
+
+;; --- ORG BABEL ---
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((R . t)
+   (emacs-lisp . t))
+ )
+ (setq org-babel-R-command "C:/Users/teodorm3/Bin/R-4.2.1/bin/x64/R --slave --no-save")
 
 (setq python-shell-interpreter "python3")
 
@@ -373,48 +400,6 @@
        (propertize (format " (%s, %s)" words chars)
                    'face `(:height 0.9))))))
 
-(defun custom-modeline-flycheck-status ()
-  (let* ((text (pcase flycheck-last-status-change
-                (`finished (if flycheck-current-errors
-                               (let ((count (let-alist (flycheck-count-errors flycheck-current-errors)
-                                              (+ (or .warning 0) (or .error 0)))))
-                                 (format
-				  (concat (all-the-icons-faicon "ban" 
-								:height 0.9
-								:v-adjust -0.0 
-								:face 'all-the-icons-red)
-					  " %sx")
-				  ;;"✖ %sx " 
-				  count (unless (eq 1 count) "")))
-                             "✔"))
-                (`running     (all-the-icons-octicon "sync" 
-						     :height 1.1
-						     :v-adjust -0.0 
-						     :face 'all-the-icons-blue))
-                (`no-checker  (all-the-icons-faicon "eye-slash" 
-						      :height 1.1
-						      :v-adjust -0.0 
-						      :face 'all-the-icons-orange))
-                (`not-checked (all-the-icons-faicon "bell-slash" 
-						    :height 0.7
-						    :v-adjust -0.0))
-                (`errored (all-the-icons-octicon "alert" 
-						 :height 0.8
-						 :v-adjust -0.0 
-						 :face 'all-the-icons-orange))
-                (`interrupted (all-the-icons-octicon "stop" 
-						     :height 0.8
-						     :v-adjust -0.0 
-						     :face 'all-the-icons-orange))
-                (`suspicious  (all-the-icons-faicon "commenting-o" 
-						    :height 0.9
-						    :v-adjust -0.0)))))
-     (propertize text
-                 'help-echo "Show Flycheck Errors"
-                 'mouse-face '(:box 1)
-                 'local-map (make-mode-line-mouse-map
-                             'mouse-1 (lambda () (interactive) (flycheck-list-errors))))))
-
 ;; version control NOT SO GOOD
 (defun -custom-modeline-github-vc ()
   (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
@@ -444,8 +429,6 @@
 ;; The formatter
 (setq-default mode-line-format
       (list
-       " "
-	'(:eval (custom-modeline-flycheck-status))
 	" "
 	;; Buffer modified
 	'(:eval (if (buffer-modified-p)
