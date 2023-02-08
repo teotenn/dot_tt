@@ -127,7 +127,8 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 
  (use-package flyspell
    :defer t
-   :if (eq system-type 'gnu/linux)
+   :if (and (eq system-type 'gnu/linux)
+	    (not tt/is-termux))
    :config
    (setq ispell-program-name "aspell"))
 
