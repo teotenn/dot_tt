@@ -284,6 +284,15 @@
 ;; org clock format
 (setq org-duration-format (quote h:mm))
 
+
+;; --- ORG BABEL ---
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((R . t)
+   (emacs-lisp . t))
+ )
+ (setq org-babel-R-command "C:/Users/teodorm3/Bin/R-4.2.1/bin/x64/R --slave --no-save")
+
 (setq python-shell-interpreter "python3")
 
 (use-package elpy

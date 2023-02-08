@@ -45,6 +45,11 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
   (package-refresh-contents)
   (package-install 'use-package))
 (setq use-package-always-ensure t)
+
+;; A diferentiation for termux
+(setq tt/is-termux (string-match-p
+		    (rx (* nonl) "com.termux" (* nonl))
+		    (getenv "HOME")))
 #+END_SRC
 
 #+RESULTS:
@@ -125,6 +130,12 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
    :if (eq system-type 'gnu/linux)
    :config
    (setq ispell-program-name "aspell"))
+
+ (use-package flyspell
+  :defer t
+  :if tt/is-termux
+  :config
+  (setq ispell-program-name (executable-find "hunspell")))
 
  ;; Check on the go for all text-based modes (org, md, etc)
  (add-hook 'text-mode-hook 'flyspell-mode)
@@ -350,6 +361,15 @@ And in general for [[https://lintr.r-lib.org/index.html][lintr]] and [[https://s
 
 ;; org clock format
 (setq org-duration-format (quote h:mm))
+
+
+;; --- ORG BABEL ---
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((R . t)
+   (emacs-lisp . t))
+ )
+ (setq org-babel-R-command "C:/Users/teodorm3/Bin/R-4.2.1/bin/x64/R --slave --no-save")
 #+END_SRC
 
 * Python3
