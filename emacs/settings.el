@@ -12,6 +12,11 @@
   (package-install 'use-package))
 (setq use-package-always-ensure t)
 
+;; A diferentiation for termux
+(setq tt/is-termux (string-match-p
+		    (rx (* nonl) "com.termux" (* nonl))
+		    (getenv "HOME")))
+
 ;; Stop the welcome screen
 (setq inhibit-startup-screen t)
 ;; Hide toolbar
@@ -67,8 +72,13 @@
 (setq add-log-full-name "Manuel Teodoro")
 (setq change-log-default-name "CHANGELOG")
 
-;; -----> FLYSPELL CUSTOMIZATION <----- ;;
-;; Diccionario
+;; Shell warning indentation off
+(advice-add 'sh-set-shell :around
+            (lambda (orig-fun &rest args)
+              (cl-letf (((symbol-function 'message) #'ignore))
+                (apply orig-fun args))))
+
+;; Dictionaries
 (use-package flyspell
   :defer t
   :if (eq system-type 'windows-nt)
@@ -78,9 +88,16 @@
 
 (use-package flyspell
   :defer t
-  :if (eq system-type 'gnu/linux)
+  :if (and (eq system-type 'gnu/linux)
+	   (not tt/is-termux))
   :config
   (setq ispell-program-name "aspell"))
+
+(use-package flyspell
+ :defer t
+ :if tt/is-termux
+ :config
+ (setq ispell-program-name (executable-find "hunspell")))
 
 ;; Check on the go for all text-based modes (org, md, etc)
 (add-hook 'text-mode-hook 'flyspell-mode)
@@ -89,12 +106,12 @@
 ;; load screenshot script
 ;; cloned from https://github.com/tecosaur/screenshot
 ;; Require pckgs <transient> and <posframe>
-(defun tt-load-screenshot()
+(defun tt/load-screenshot()
   (interactive)
   (load "~/.emacs.d/scripts/screenshot.el"))
 
 ;; load highlight-symbol
-(defun tt-load-highlight-symbol()
+(defun tt/load-highlight-symbol()
   (interactive)
   (load "~/.emacs.d/scripts/highlight-symbol.el"))
 
@@ -110,36 +127,37 @@
   (setq inferior-lisp-program "sbcl"))
 
 ;; rainbow-delimiters
-(use-package rainbow-delimiters)
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-
-(custom-set-faces
- '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue3"))))
- '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse4"))))
- '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "linen"))))
- '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
- '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SteelBlue2"))))
- '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
- '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "DimGray"))))
- '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "bisque"))))
-)
-
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode)
+  :config
+  (custom-set-faces
+   '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue3"))))
+   '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse4"))))
+   '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "linen"))))
+   '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
+   '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SteelBlue2"))))
+   '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
+   '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "DimGray"))))
+   '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "bisque"))))))
 
 ;; yasnippet
-(setq yas-snippet-dirs
-      '("~/.emacs.d/snippets"
-        "~/Code/dot_tt/emacs/snippets"
-        ))
-
-(use-package yasnippet)
-(yas-global-mode 1)
+(use-package yasnippet
+  :init
+  (setq yas-snippet-dirs
+	'("~/.emacs.d/snippets"
+          "~/Code/dot_tt/emacs/snippets"
+          ))
+  :config
+  (yas-global-mode 1))
 
 (use-package neotree)
 
-(defun tt-wrap ()
+(defun tt/wrap ()
      "Shortcut to open neotree directly on wrapper"
      (interactive)
-     (neotree-dir "c:/Users/teodorm3/Documents/Wrapper"))
+     (if (eq system-type 'windows-nt)
+	 (neotree-dir "c:/Users/teodorm3/Documents/Wrapper")
+       (message "tt/wrap is available only on Windows")))
 
 ;; My lintr::linters
 (setq tt/lintr-linters
@@ -238,8 +256,7 @@
 (use-package company
   :config
   ;; Turn on company-mode globally:
-  (add-hook 'after-init-hook 'global-company-mode))
-
+  (add-hook 'after-init-hook 'global-company-mode)
 ;; More customization options for company:
 (setq company-selection-wrap-around t
       ;; Align annotations to the right tooltip border:
@@ -249,10 +266,10 @@
       ;; Completion will start after typing two letters:
       company-minimum-prefix-length 3
       ;; Maximum number of candidates in the tooltip:
-      company-tooltip-limit 10)
+      company-tooltip-limit 10))
 
 (use-package company-quickhelp
-  :config
+  :custom
   ;; Load company-quickhelp globally:
   (company-quickhelp-mode)
   ;; Time before display of documentation popup:
@@ -261,29 +278,24 @@
 (eval-after-load 'company
   '(define-key company-active-map (kbd "C-c h") #'company-quickhelp-manual-begin))
 
-(require 'org)
-
-;; Truncate lines
-(define-key org-mode-map "\M-q" 'toggle-truncate-lines)
-(define-key global-map "\C-ca" 'org-agenda)
-(setq org-agenda-files '("~/Code/personal_config/org/"))
+(use-package org
+  :ensure nil
+  :bind
+  ("M-q" . toggle-truncate-lines)
+  ("C-c a" . org-agenda)
+  :config
+  (setq org-agenda-files '("~/Code/personal_config/org/"))
+  ;; Settags closer (default is -80)
+  (setq org-tags-column -40)
+  ;; org clock format
+  (setq org-duration-format (quote h:mm))
+  (setq org-ellipsis " ≫"))
    
 ;; Bullets
-(use-package org-bullets)
+(use-package org-bullets
+  :config
+  (setq org-bullets-bullet-list '("✙" "✤" "✚" "✜" "✛" "✢" "✣" "✥" "✠" "☥")))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-
-;; Same syntax highlight as in source file
-(setq org-src-fontify-natively t
-      org-src-tab-acts-natively t
-      org-confirm-babel-evaluate nil
-      org-edit-src-content-indentation 0)
-
-;; Settags closer (default is -80)
-(setq org-tags-column -40)
-
-;; org clock format
-(setq org-duration-format (quote h:mm))
-
 
 ;; --- ORG BABEL ---
 (org-babel-do-load-languages
@@ -291,7 +303,25 @@
  '((R . t)
    (emacs-lisp . t))
  )
- (setq org-babel-R-command "C:/Users/teodorm3/Bin/R-4.2.1/bin/x64/R --slave --no-save")
+
+(if (eq system-type 'windows-nt)
+    (setq org-babel-R-command "C:/Users/teodorm3/Bin/R-4.2.1/bin/x64/R --slave --no-save"))
+
+(use-package org-tempo
+  :ensure nil
+  :config
+  ;; clocktable
+  (add-to-list 'org-structure-template-alist '("CT" . ": clocktable :scope subtree :maxlevel 4 :block today"))
+  ;; other
+  ;; (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  ;; (add-to-list 'org-structure-template-alist '("py" . "src python"))
+  ;; elisp
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  ;; R
+  (add-to-list 'org-structure-template-alist '("r" . "src R"))
+  (add-to-list 'org-structure-template-alist '("rtibble" . "src R :session :results table :colnames yes :exports both"))
+  (add-to-list 'org-structure-template-alist '("rplot" . "src R :session :file figure-N.png :results value graphics file :results output :exports both"))
+  (add-to-list 'org-structure-template-alist '("rexport" . "src R :session :results output :exports both")))
 
 (setq python-shell-interpreter "python3")
 
@@ -301,11 +331,6 @@
   (setq elpy-rpc-python-command "python3")
   :config
   (elpy-enable))
-
-;; Jedi
-;; (add-hook 'python-mode-hook 'jedi:setup)
-;; (setq jedi:complete-on-dot t)     
-;; (setq elpy-rpc-backend "jedi")
 
 ;; doom-themes
 (use-package all-the-icons)
