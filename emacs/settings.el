@@ -162,7 +162,8 @@
 ;; My lintr::linters
 (setq tt/lintr-linters
       "lintr::linters_with_defaults(
-         line_length_linter = line_length_linter(120)
+	 line_length_linter = line_length_linter(120),
+         linters = object_name_linter(styles = c('dotted.case', 'lowercase', 'snake_case'))
        )"
  )
 
