@@ -210,58 +210,59 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 * ESS and R
 ** ESS
 #+BEGIN_SRC emacs-lisp
-;; My lintr::linters
-(setq tt/lintr-linters
-      "lintr::linters_with_defaults(
-         line_length_linter = line_length_linter(120)
-       )"
- )
+  ;; My lintr::linters
+  (setq tt/lintr-linters
+	"lintr::linters_with_defaults(
+	   line_length_linter = line_length_linter(120),
+           linters = object_name_linter(styles = c('dotted.case', 'lowercase', 'snake_case'))
+	 )"
+   )
 
-(use-package flymake
-  :config
-  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
+  (use-package flymake
+    :config
+    (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 
-(use-package ess
-  :if (eq system-type 'windows-nt)
-  :init
-  (setq ess-use-flymake nil)
-  (setq inferior-ess-r-program "C:/Users/teodorm3/Bin/R-4.2.1/bin/R.exe"))
+  (use-package ess
+    :if (eq system-type 'windows-nt)
+    :init
+    (setq ess-use-flymake nil)
+    (setq inferior-ess-r-program "C:/Users/teodorm3/Bin/R-4.2.1/bin/R.exe"))
 
-(use-package ess
-  :init
-  (setq ess-style 'RStudio)
-  :config
-  (setq ess-r-flymake-linters tt/lintr-linters)
-  (setq ess-eval-visibly-p t) ; ESS process (print all)
-  (setq ess-ask-for-ess-directory nil)
-  ;; R console hook
-  (defun my-inferior-ess-init ()
-    (setq-local ansi-color-for-comint-mode 'filter)
-    (define-key inferior-ess-mode-map [\C-up]
-      'comint-previous-matching-input-from-input)
-    (define-key inferior-ess-mode-map [\C-down]
-      'comint-next-matching-input-from-input)
-    (define-key inferior-ess-mode-map [\C-x \t]
-      'comint-dynamic-complete-filename))
-  (add-hook 'inferior-ess-mode-hook 'my-inferior-ess-init)
-  ;; Syntax highlight
-  (setq ess-R-font-lock-keywords
-      '((ess-R-fl-keyword:keywords . t)
-	(ess-R-fl-keyword:constants . t)
-	(ess-R-fl-keyword:modifiers . t)
-	(ess-R-fl-keyword:fun-defs . t)
-	(ess-R-fl-keyword:assign-ops . t)
-	(ess-R-fl-keyword:%op% . t)
-	(ess-fl-keyword:fun-calls . t)
-	(ess-fl-keyword:numbers . t)
-	(ess-fl-keyword:operators)
-	(ess-fl-keyword:delimiters)
-	(ess-fl-keyword:=)
-	(ess-R-fl-keyword:F&T . t)))
-  )
+  (use-package ess
+    :init
+    (setq ess-style 'RStudio)
+    :config
+    (setq ess-r-flymake-linters tt/lintr-linters)
+    (setq ess-eval-visibly-p t) ; ESS process (print all)
+    (setq ess-ask-for-ess-directory nil)
+    ;; R console hook
+    (defun my-inferior-ess-init ()
+      (setq-local ansi-color-for-comint-mode 'filter)
+      (define-key inferior-ess-mode-map [\C-up]
+	'comint-previous-matching-input-from-input)
+      (define-key inferior-ess-mode-map [\C-down]
+	'comint-next-matching-input-from-input)
+      (define-key inferior-ess-mode-map [\C-x \t]
+	'comint-dynamic-complete-filename))
+    (add-hook 'inferior-ess-mode-hook 'my-inferior-ess-init)
+    ;; Syntax highlight
+    (setq ess-R-font-lock-keywords
+	'((ess-R-fl-keyword:keywords . t)
+	  (ess-R-fl-keyword:constants . t)
+	  (ess-R-fl-keyword:modifiers . t)
+	  (ess-R-fl-keyword:fun-defs . t)
+	  (ess-R-fl-keyword:assign-ops . t)
+	  (ess-R-fl-keyword:%op% . t)
+	  (ess-fl-keyword:fun-calls . t)
+	  (ess-fl-keyword:numbers . t)
+	  (ess-fl-keyword:operators)
+	  (ess-fl-keyword:delimiters)
+	  (ess-fl-keyword:=)
+	  (ess-R-fl-keyword:F&T . t)))
+    )
 
-;; Remove Flymake support 
-;; (setq ess-use-flymake nil)
+  ;; Remove Flymake support 
+  ;; (setq ess-use-flymake nil)
 #+END_SRC
 
 ** Flycheck
