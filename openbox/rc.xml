@@ -41,76 +41,76 @@
        following: 'Mouse' - where the mouse is, or
                   'Active' - where the active window is -->
   </placement>
-  <theme>
-    <name>Sparky6</name>
-    <titleLayout>NLIMC</titleLayout>
-    <!--
-      available characters are NDSLIMC, each can occur at most once.
-      N: window icon
-      L: window label (AKA title).
-      I: iconify
-      M: maximize
-      C: close
-      S: shade (roll up/down)
-      D: omnipresent (on all desktops).
-  -->
-    <keepBorder>yes</keepBorder>
-    <animateIconify>yes</animateIconify>
-    <font place="ActiveWindow">
-      <name>sans</name>
-      <size>8</size>
-      <!-- font size in points -->
-      <weight>bold</weight>
-      <!-- 'bold' or 'normal' -->
-      <slant>normal</slant>
-      <!-- 'italic' or 'normal' -->
-    </font>
-    <font place="InactiveWindow">
-      <name>sans</name>
-      <size>8</size>
-      <!-- font size in points -->
-      <weight>bold</weight>
-      <!-- 'bold' or 'normal' -->
-      <slant>normal</slant>
-      <!-- 'italic' or 'normal' -->
-    </font>
-    <font place="MenuHeader">
-      <name>sans</name>
-      <size>10</size>
-      <!-- font size in points -->
-      <weight>Normal</weight>
-      <!-- 'bold' or 'normal' -->
-      <slant>Normal</slant>
-      <!-- 'italic' or 'normal' -->
-    </font>
-    <font place="MenuItem">
-      <name>sans</name>
-      <size>10</size>
-      <!-- font size in points -->
-      <weight>Normal</weight>
-      <!-- 'bold' or 'normal' -->
-      <slant>Normal</slant>
-      <!-- 'italic' or 'normal' -->
-    </font>
-    <font place="ActiveOnScreenDisplay">
-      <name>sans</name>
-      <size>9</size>
-      <!-- font size in points -->
-      <weight>bold</weight>
-      <!-- 'bold' or 'normal' -->
-      <slant>normal</slant>
-      <!-- 'italic' or 'normal' -->
-    </font>
-    <font place="InactiveOnScreenDisplay">
-      <name>sans</name>
-      <size>9</size>
-      <!-- font size in points -->
-      <weight>bold</weight>
-      <!-- 'bold' or 'normal' -->
-      <slant>normal</slant>
-      <!-- 'italic' or 'normal' -->
-    </font>
-  </theme>
+  <!-- <theme> -->
+  <!--   <name>Sparky6</name> -->
+  <!--   <titleLayout>NLIMC</titleLayout> -->
+  <!--   <!-\- -->
+  <!--     available characters are NDSLIMC, each can occur at most once. -->
+  <!--     N: window icon -->
+  <!--     L: window label (AKA title). -->
+  <!--     I: iconify -->
+  <!--     M: maximize -->
+  <!--     C: close -->
+  <!--     S: shade (roll up/down) -->
+  <!--     D: omnipresent (on all desktops). -->
+  <!-- -\-> -->
+  <!--   <keepBorder>yes</keepBorder> -->
+  <!--   <animateIconify>yes</animateIconify> -->
+  <!--   <font place="ActiveWindow"> -->
+  <!--     <name>sans</name> -->
+  <!--     <size>8</size> -->
+  <!--     <!-\- font size in points -\-> -->
+  <!--     <weight>bold</weight> -->
+  <!--     <!-\- 'bold' or 'normal' -\-> -->
+  <!--     <slant>normal</slant> -->
+  <!--     <!-\- 'italic' or 'normal' -\-> -->
+  <!--   </font> -->
+  <!--   <font place="InactiveWindow"> -->
+  <!--     <name>sans</name> -->
+  <!--     <size>8</size> -->
+  <!--     <!-\- font size in points -\-> -->
+  <!--     <weight>bold</weight> -->
+  <!--     <!-\- 'bold' or 'normal' -\-> -->
+  <!--     <slant>normal</slant> -->
+  <!--     <!-\- 'italic' or 'normal' -\-> -->
+  <!--   </font> -->
+  <!--   <font place="MenuHeader"> -->
+  <!--     <name>sans</name> -->
+  <!--     <size>10</size> -->
+  <!--     <!-\- font size in points -\-> -->
+  <!--     <weight>Normal</weight> -->
+  <!--     <!-\- 'bold' or 'normal' -\-> -->
+  <!--     <slant>Normal</slant> -->
+  <!--     <!-\- 'italic' or 'normal' -\-> -->
+  <!--   </font> -->
+  <!--   <font place="MenuItem"> -->
+  <!--     <name>sans</name> -->
+  <!--     <size>10</size> -->
+  <!--     <!-\- font size in points -\-> -->
+  <!--     <weight>Normal</weight> -->
+  <!--     <!-\- 'bold' or 'normal' -\-> -->
+  <!--     <slant>Normal</slant> -->
+  <!--     <!-\- 'italic' or 'normal' -\-> -->
+  <!--   </font> -->
+  <!--   <font place="ActiveOnScreenDisplay"> -->
+  <!--     <name>sans</name> -->
+  <!--     <size>9</size> -->
+  <!--     <!-\- font size in points -\-> -->
+  <!--     <weight>bold</weight> -->
+  <!--     <!-\- 'bold' or 'normal' -\-> -->
+  <!--     <slant>normal</slant> -->
+  <!--     <!-\- 'italic' or 'normal' -\-> -->
+  <!--   </font> -->
+  <!--   <font place="InactiveOnScreenDisplay"> -->
+  <!--     <name>sans</name> -->
+  <!--     <size>9</size> -->
+  <!--     <!-\- font size in points -\-> -->
+  <!--     <weight>bold</weight> -->
+  <!--     <!-\- 'bold' or 'normal' -\-> -->
+  <!--     <slant>normal</slant> -->
+  <!--     <!-\- 'italic' or 'normal' -\-> -->
+  <!--   </font> -->
+  <!-- </theme> -->
   <desktops>
     <!-- this stuff is only used at startup, pagers allow you to change them
        during a session
@@ -120,7 +120,7 @@
 
        use obconf if you want to change these without having to log out
        and back in -->
-    <number>2</number>
+    <number>4</number>
     <firstdesk>1</firstdesk>
     <names>
       <!-- set names up here if you want to, like this:
@@ -153,10 +153,10 @@
      Many programs reserve space automatically, but you can use this in other
      cases. -->
   <margins>
-    <top>0</top>
-    <bottom>0</bottom>
-    <left>0</left>
-    <right>0</right>
+    <top>15</top>
+    <bottom>15</bottom>
+    <left>15</left>
+    <right>15</right>
   </margins>
   <dock>
     <position>TopLeft</position>
@@ -169,9 +169,9 @@
     <direction>Vertical</direction>
     <!-- 'Vertical' or 'Horizontal' -->
     <autoHide>no</autoHide>
-    <hideDelay>300</hideDelay>
+    <hideDelay>500</hideDelay>
     <!-- in milliseconds (1000 = 1 second) -->
-    <showDelay>300</showDelay>
+    <showDelay>500</showDelay>
     <!-- in milliseconds (1000 = 1 second) -->
     <moveButton>Middle</moveButton>
     <!-- 'Left', 'Middle', 'Right' -->
@@ -191,18 +191,6 @@
         <wrap>no</wrap>
       </action>
     </keybind>
-    <keybind key="C-A-Up">
-      <action name="GoToDesktop">
-        <to>up</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="C-A-Down">
-      <action name="GoToDesktop">
-        <to>down</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
     <keybind key="S-A-Left">
       <action name="SendToDesktop">
         <to>left</to>
@@ -213,38 +201,6 @@
       <action name="SendToDesktop">
         <to>right</to>
         <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="S-A-Up">
-      <action name="SendToDesktop">
-        <to>up</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="S-A-Down">
-      <action name="SendToDesktop">
-        <to>down</to>
-        <wrap>no</wrap>
-      </action>
-    </keybind>
-    <keybind key="W-F1">
-      <action name="GoToDesktop">
-        <to>1</to>
-      </action>
-    </keybind>
-    <keybind key="W-F2">
-      <action name="GoToDesktop">
-        <to>2</to>
-      </action>
-    </keybind>
-    <keybind key="W-F3">
-      <action name="GoToDesktop">
-        <to>3</to>
-      </action>
-    </keybind>
-    <keybind key="W-F4">
-      <action name="GoToDesktop">
-        <to>4</to>
       </action>
     </keybind>
     <keybind key="W-d">
@@ -273,15 +229,6 @@
     <!-- Keybindings for window switching -->
     <keybind key="A-Tab">
       <action name="NextWindow">
-        <finalactions>
-          <action name="Focus"/>
-          <action name="Raise"/>
-          <action name="Unshade"/>
-        </finalactions>
-      </action>
-    </keybind>
-    <keybind key="A-S-Tab">
-      <action name="PreviousWindow">
         <finalactions>
           <action name="Focus"/>
           <action name="Raise"/>
@@ -322,6 +269,15 @@
       </action>
     </keybind>
     <!-- Keybindings for running applications -->
+    <keybind key="W-space">
+      <action name="Execute">
+        <startupnotify>
+          <enabled>false</enabled>
+          <name>rofi menu</name>
+        </startupnotify>
+        <command>rofi -no-lazy-grab -show drun -theme ~/.config/rofi/theme.rasi</command>
+      </action>
+    </keybind>
     <keybind key="W-f">
       <action name="Execute">
         <startupnotify>
@@ -342,15 +298,35 @@
         <command>xfce4-screenshooter</command>
       </action>
     </keybind>
-    <!-- Launch emacs  -->
+    <!-- Launch emacs keychains -->
     <keybind key="W-e">
-      <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>emacs</name>
-        </startupnotify>
-        <command>/home/teoten/.guix-profile/bin/emacs</command>
-      </action>
+      <keybind key="c">
+	<action name="Execute">
+          <startupnotify>
+            <enabled>true</enabled>
+            <name>emacs client</name>
+          </startupnotify>
+          <command>emacsclient -c</command>
+	</action>
+      </keybind>
+      <keybind key="q">
+	<action name="Execute">
+          <startupnotify>
+            <enabled>true</enabled>
+            <name>emacs quick</name>
+          </startupnotify>
+          <command>emacs -q</command>
+	</action>
+      </keybind>
+      <keybind key="e">
+	<action name="Execute">
+          <startupnotify>
+            <enabled>true</enabled>
+            <name>emacs new</name>
+          </startupnotify>
+          <command>emacs</command>
+	</action>
+      </keybind>
     </keybind>
     <!-- Audio control  -->
     <keybind key="W-v">
@@ -396,7 +372,7 @@
         <command>gexec</command>
       </action>
     </keybind>
-    <keybind key="C-Escape">
+    <keybind key="W-Tab">
       <action name="Execute">
         <startupnotify>
           <enabled>false</enabled>
@@ -414,15 +390,6 @@
         <command>x-www-browser</command>
       </action>
     </keybind>
-    <keybind key="W-m">
-      <action name="Execute">
-        <startupnotify>
-          <enabled>true</enabled>
-          <name>Email client</name>
-        </startupnotify>
-        <command>exo-open --launch MailReader</command>
-      </action>
-    </keybind>
     <keybind key="W-p">
       <action name="Execute">
         <startupnotify>
@@ -433,31 +400,33 @@
       </action>
     </keybind>
     <!-- A bit of tiling -->
-    <keybind key="W-Right">
-      <action name="GrowToEdgeEast"/>
-    </keybind>
-    <keybind key="W-C-Right">
-      <action name="ShrinkToEdge"><direction>east</direction></action>
+    <keybind key="W-A-r" chroot="true">
+      <keybind key="Right">
+	<action name="GrowToEdgeEast"/>
+      </keybind>
+      <keybind key="C-Right">
+	<action name="ShrinkToEdge"><direction>east</direction></action>
+      </keybind>
+      <keybind key="Left">
+	<action name="GrowToEdgeWest"/>
+      </keybind>
+      <keybind key="C-Left">
+	<action name="ShrinkToEdge"><direction>west</direction></action>
+      </keybind>
+      <keybind key="Down">
+	<action name="GrowToEdgeSouth"/>
+      </keybind>
+      <keybind key="C-Down">
+	<action name="ShrinkToEdge"><direction>south</direction></action>
+      </keybind>
+      <keybind key="Up">
+	<action name="GrowToEdgeNorth"/>
+      </keybind>
+      <keybind key="C-Up">
+	<action name="ShrinkToEdge"><direction>north</direction></action>
+      </keybind>
     </keybind>
     <keybind key="W-Left">
-      <action name="GrowToEdgeWest"/>
-    </keybind>
-    <keybind key="W-C-Left">
-      <action name="ShrinkToEdge"><direction>west</direction></action>
-    </keybind>
-    <keybind key="W-Down">
-      <action name="GrowToEdgeSouth"/>
-    </keybind>
-    <keybind key="W-C-Down">
-      <action name="ShrinkToEdge"><direction>south</direction></action>
-    </keybind>
-    <keybind key="W-Up">
-      <action name="GrowToEdgeNorth"/>
-    </keybind>
-    <keybind key="W-C-Up">
-      <action name="ShrinkToEdge"><direction>north</direction></action>
-    </keybind>
-    <keybind key="W-A-Left">
       <action name="UnmaximizeFull"/>
       <action name="MaximizeVert"/>
       <action name="MoveResizeTo">
@@ -466,7 +435,7 @@
         <y>0</y>
       </action>
     </keybind>
-    <keybind key="W-A-Right">
+    <keybind key="W-Right">
       <action name="UnmaximizeFull"/>
       <action name="MaximizeVert"/>
       <action name="MoveResizeTo">
@@ -925,6 +894,28 @@
   </application>
 
   # end of the example
--->
+    -->
+    <application name="emacs">
+      <position force="no">
+        <x>5%</x>
+        <y>5%</y>
+        <monitor>1</monitor>
+      </position>
+      <size>
+        <width>60%</width>
+        <height>80%</height>
+      </size>
+    </application>
+    <application name="thunar">
+      <position force="no">
+        <x>25%</x>
+        <y>25%</y>
+        <monitor>1</monitor>
+      </position>
+      <size>
+        <width>50%</width>
+        <height>60%</height>
+      </size>
+    </application>
   </applications>
 </openbox_config>
