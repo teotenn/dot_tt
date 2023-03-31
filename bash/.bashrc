@@ -112,5 +112,10 @@ if ! shopt -oq posix; then
   fi
 fi
 
-## Other paths
+# Other paths
 PATH=$PATH:/home/teoten/Code/dot_tt/bash/scripts/
+
+# Emacs as editor
+export EDITOR="emacsclient -nw"
+export VISUAL=$EDITOR
+# before the above run sudo update-alternatives --config editor

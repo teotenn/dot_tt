@@ -2,6 +2,10 @@ if [ -f /usr/bin/thunar ]; then
 thunar --daemon &
 fi
 
+if [ -f /usr/bin/compton ]; then
+    compton &
+fi
+
 if [ -f /usr/bin/emacs ]; then
 emacs --daemon &
 fi
