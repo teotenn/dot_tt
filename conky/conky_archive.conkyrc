@@ -1,0 +1,101 @@
+########## PERSONAL NOTES ##########
+# File to keep old code not use anymore to keep the knowledge and ideas
+# And make the main Conky less bloated with comments
+####################################
+
+# conky configuration
+#
+# The list of variables has been removed from this file in favour
+# of keeping the documentation more maintainable.
+# Check http://conky.sf.net for an up-to-date-list.
+#
+# For ideas about how to modify conky, please see:
+# http://crunchbanglinux.org/forums/topic/59/my-conky-config/
+#
+# For help with conky, please see:
+# http://crunchbanglinux.org/forums/topic/2047/conky-help/
+#
+# Enjoy! 
+##############################################
+# Settings
+##############################################
+background yes
+use_xft yes
+xftfont HandelGotD:size=11
+xftalpha 0.5
+update_interval 4.0
+total_run_times 0
+own_window yes
+own_window_type normal
+own_window_transparent no
+own_window_argb_visual yes
+own_window_argb_value 175
+# FOR SEMI TRANSPARENCY install > compton
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+own_window_colour 3F2E2F
+own_window_class Conky
+double_buffer yes
+minimum_size 200 5
+maximum_width 220
+draw_shades yes
+draw_outline no
+draw_borders no
+draw_graph_borders yes
+default_color ffffff
+color1 386090
+color2 006400
+default_shade_color 000000
+default_outline_color black
+alignment top_right
+gap_x 5
+gap_y 15
+no_buffers yes
+uppercase no
+cpu_avg_samples 2
+override_utf8_locale no
+
+TEXT
+#${color1}$alignc ----- C O N K Y -----
+
+${color1}CPU $color${cpu cpu0}% $alignr${color1} Fan:$color ${execi 2 sensors | grep 'fan1' | cut -c 14-21} 
+$color2${cpugraph cpu0}
+${color1} ACPI:$color $acpitemp C ${alignr}${color1} C-0:$color ${execi 2 sensors | grep 'Core 0' | cut -c 16-17} C   ${color1} C-1:$color ${execi 2 sensors | grep 'Core 1' | cut -c 16-17} C
+# The last 3 require have installed sensors in the shell and run <sudo sensors-detect> 
+
+# COLORFUL BARS
+# check with =sudo ifconfig= if you have wlan0 or wlp2s0 
+${color1} Network: $color${wireless_essid wlan0} $alignr ${wireless_link_qual_perc wlan0}%
+${if_match ${wireless_link_qual_perc wlan0} >= 60}${color2}${wireless_link_bar wlan0}${else} ${if_match ${wireless_link_qual_perc wlan0} >= 30}${color FFA500}${wireless_link_bar wlan0}${else}${color B22222}${if_match ${wireless_link_qual_perc wlan0} =< 10}${wireless_link_bar wlan0} ${else} ${wireless_link_bar wlan0}${endif}
+${color1} UP: $color${upspeedf wlan0} ${color1} $alignr DOWN: $color${downspeedf wlan0}
+# Battery
+${color1} Battery:$color$alignr${battery_percent BAT0}%
+${if_match ${battery_percent BAT0} >= 40}${color2}${battery_bar 6 BAT0}${else} ${if_match ${battery_percent BAT0} >= 20}${color FFA500}${battery_bar 6 BAT0}${else}${color B22222}${if_match ${battery_percent} =< 10}${battery_bar 6 BAT0} ${else} ${battery_bar 6 BAT0}${endif}
+# RAM 
+${color1}RAM $color$alignc $mem / $memmax $alignr $memperc%
+${if_match ${memperc} <= 50}${color2}${membar}${else} ${if_match ${memperc} <= 75}${color FFA500}${membar}${else}${color B22222}${if_match ${memperc} => 90}${membar} ${else} ${membar}${endif}
+
+# ${color1}Top:$color$alignr$processes processes ($running_processes running)
+# ${color1}Name              $alignr PID   CPU    MEM
+# $color ${top name 1} $alignr${top pid 1} ${top cpu 1} ${top mem 1}
+# $color ${top name 2} $alignr${top pid 2} ${top cpu 2} $alignr${top mem 2}
+# $color ${top name 3} $alignr${top pid 3} ${top cpu 3} $alignr${top mem 3}
+# $color ${top name 4} $alignr${top pid 4} ${top cpu 4} $alignr${top mem 4}
+# $color ${top name 5} $alignr${top pid 5} ${top cpu 5} $alignr${top mem 5}
+# $color ${top name 6} $alignr${top pid 6} ${top cpu 6} $alignr${top mem 6}
+${color1}$alignc --- GIT ---
+${color2} B::$color${exec git --git-dir ~/Code/personal_config/.git branch --show-current} ${color2}$alignr Dots
+$color ${exec git --git-dir ~/Code/personal_config/.git log -1  --pretty=format:"%s"}
+${color2} B::$color${exec git --git-dir ~/Code/WebApps/Rwhitedwarf-blog/.git branch --show-current} ${color2}$alignr Blog
+$color ${exec git --git-dir ~/Code/WebApps/Rwhitedwarf-blog/.git log -1  --pretty=format:"%s"}
+${color2} B::$color${exec git --git-dir ~/Code/orgs-maps/.git branch --show-current} ${color2}$alignr Maps
+$color ${exec git --git-dir ~/Code/orgs-maps/.git log -1  --pretty=format:"%s"}
+#${hr 1} # A straight line
+
+${color1}$alignc --- KEYS ---
+${color1}Alt+F2 $alignr $color Run Dialog
+${color1}Alt+F3 $alignr$color  Alt Menu
+${color1}W+e $alignr$color Emacs
+${color1}W+v $alignr$color Volume Control
+${color1}W+d $alignr$color Show desktop
+${color1}W+A+left $alignr$color Align window to left
+${color1}S+A+left $alignr$color Send to next buffer

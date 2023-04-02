@@ -1,25 +1,22 @@
-#!/bin/bash
+if [ -f /usr/bin/thunar ]; then
+thunar --daemon &
+fi
 
-# Depending on the n monitors connected, setup certain parameters
-# Uses xwallpaper and xrandr, make sure to install it
-function n_mons(){
-    local nmons=()
-    local monitor
-    local PAPESDIR=$HOME/Pictures/wallpapers
-    local PAPE=$(find "$PAPESDIR" -type f | sort -R | tail -1)
-    for monitor in $(xrandr | awk '/ connected/ && /[[:digit:]]x[[:digit:]].*+/{print $1}'); do
-	nmons+=("$monitor")
-    done
-    if [ "${#nmons[@]}" -eq 1 ]
-    then
-	xrandr --output LVDS-1 --mode 1280x800 --output VGA-1 --off
-	xwallpaper --output LVDS-1 --center "$PAPE"
-    else
-	local PAPEB=$(find "$PAPESDIR" -type f | sort -R | tail -1)
-	xrandr --output LVDS-1 --mode 1280x800 --output VGA-1 --mode 1920x1080 --left-of LVDS-1
-	xwallpaper --output LVDS-1 --center "$PAPE" --output VGA-1 --zoom "$PAPEB"
-    fi
-}
+if [ -f /usr/bin/compton ]; then
+    compton &
+fi
 
-n_mons
+if [ -f /usr/bin/emacs ]; then
+emacs --daemon &
+fi
 
+sleep 2
+if [ -f /home/teoten/Code/dot_tt/bash/scripts/sirius_xrandr.sh ]; then
+    /bin/bash /home/teoten/Code/dot_tt/bash/scripts/sirius_xrandr.sh
+fi
+
+if [ -f /usr/bin/conky ]; then
+    conky -q -c ~/Code/dot_tt/conky/blue-white.conkyrc & conky -q -c ~/Code/dot_tt/conky/clock.conkyrc &
+elif [ -f ~/.guix-profile/bin/conky ]; then
+    ~/.guix-profile/bin/conky -q -c ~/Code/dot_tt/conky/blue-white.conkyrc & ~/.guix-profile/bin/conky -q -c ~/Code/dot_tt/conky/clock.conkyrc &
+fi
