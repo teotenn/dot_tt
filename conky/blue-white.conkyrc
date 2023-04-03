@@ -62,11 +62,11 @@ $color ${exec git --git-dir ~/Code/personal_config/.git log -1  --pretty=format:
 ${color2}${exec git --git-dir ~/Code/dot_tt/.git branch --show-current} ${color2}$alignr dot_tt
 $color ${exec git --git-dir ~/Code/dot_tt/.git log -1  --pretty=format:"%s"}
 ## Blog
-${color2}${exec git --git-dir ~/Code/WebApps/Rwhitedwarf-blog/.git branch --show-current} ${color2}$alignr Blog
-$color ${exec git --git-dir ~/Code/WebApps/Rwhitedwarf-blog/.git log -1  --pretty=format:"%s"}
+${color2}${exec git --git-dir /mnt/stein/Projects/blog/.git branch --show-current} ${color2}$alignr Blog
+$color ${exec git --git-dir /mnt/stein/Projects/blog/.git log -1  --pretty=format:"%s"}
 ## Mapic
-${color2}${exec git --git-dir ~/Code/orgs-maps/.git branch --show-current} ${color2}$alignr Mapic
-$color ${exec git --git-dir ~/Code/orgs-maps/.git log -1  --pretty=format:"%s"}
+${color2}${exec git --git-dir /mnt/stein/Projects/mapic/.git branch --show-current} ${color2}$alignr Mapic
+$color ${exec git --git-dir /mnt/stein/Projects/mapic/.git log -1  --pretty=format:"%s"}
 ## ${hr 1} # A straight line
 ##
 ### SECTION KEYS
