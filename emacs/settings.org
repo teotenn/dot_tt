@@ -434,7 +434,7 @@ Probably jedi is enough, however other python packages were installed in Sparky 
 
 (use-package alect-themes
   :config
-  (load-theme 'alect-dark t))
+  (load-theme 'alect-light t))
 
 ;; load a new theme unloading previous first 
 (defun al/load-theme (theme)
