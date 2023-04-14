@@ -248,6 +248,8 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
     (setq ess-r-flymake-linters tt/lintr-linters)
     (setq ess-eval-visibly-p t) ; ESS process (print all)
     (setq ess-ask-for-ess-directory nil)
+    ;; Package manipulation
+    ;; (setq ess-r-package-auto-enable-namespaced-evaluation nil)
     ;; R console hook
     (defun my-inferior-ess-init ()
       (setq-local ansi-color-for-comint-mode 'filter)
@@ -273,9 +275,6 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 	  (ess-fl-keyword:=)
 	  (ess-R-fl-keyword:F&T . t)))
     )
-
-  ;; Remove Flymake support 
-  ;; (setq ess-use-flymake nil)
 #+END_SRC
 
 ** Flycheck
@@ -432,16 +431,36 @@ And in general for [[https://lintr.r-lib.org/index.html][lintr]] and [[https://s
 * Python3
 For elpy to work, it is necessary to install first jedi, either by =apt install python3-jedi= or =pip3 install jedi=.
 Probably jedi is enough, however other python packages were installed in Sparky to ensure its functioning: eutopep8, flake8, importmagic and yapf
+
+More on python on emacs [[https://realpython.com/emacs-the-best-python-editor/#emacs-for-python-development-with-elpy]]
 #+BEGIN_SRC emacs-lisp
-(setq python-shell-interpreter "python3")
+;;(setq python-shell-interpreter "python3")
 
 (use-package elpy
   :if (eq system-type 'gnu/linux)
   :init
   (setq elpy-rpc-python-command "python3")
   :config
-  (elpy-enable))
+  (elpy-enable)
+  (setq python-shell-interpreter "jupyter"
+	python-shell-interpreter-args "console --simple-prompt"
+	python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters
+               "jupyter"))
+
+(use-package jedi)
+
+;; Auto formatting help
+;; Requires to install python "black"
+;; Use it by calling M-x blacken-buffer
+(use-package blacken)
+
+;; Jupyter and iPython
+(use-package ein
+  :hook (ein:connect-mode-hook . ein:jedi-setup))
 #+END_SRC
+
+[[https://tkf.github.io/emacs-ipython-notebook/][ein documentation]] and a [[https://millejoh.github.io/emacs-ipython-notebook/][post on ein]]
 
 * Fonts and themes
 #+BEGIN_SRC emacs-lisp
@@ -450,7 +469,7 @@ Probably jedi is enough, however other python packages were installed in Sparky 
 
 (use-package alect-themes
   :config
-  (load-theme 'alect-dark t))
+  (load-theme 'alect-light t))
 
 ;; load a new theme unloading previous first 
 (defun al/load-theme (theme)

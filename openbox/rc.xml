@@ -82,6 +82,10 @@
     <number>4</number>
     <firstdesk>1</firstdesk>
     <names>
+      <name>1</name>
+      <name>2</name>
+      <name>3</name>
+      <name>4</name>
       <!-- set names up here if you want to, like this:
     <name>desktop 1</name>
     <name>desktop 2</name>

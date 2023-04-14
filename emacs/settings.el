@@ -189,6 +189,8 @@
   (setq ess-r-flymake-linters tt/lintr-linters)
   (setq ess-eval-visibly-p t) ; ESS process (print all)
   (setq ess-ask-for-ess-directory nil)
+  ;; Package manipulation
+  ;; (setq ess-r-package-auto-enable-namespaced-evaluation nil)
   ;; R console hook
   (defun my-inferior-ess-init ()
     (setq-local ansi-color-for-comint-mode 'filter)
@@ -214,9 +216,6 @@
 	(ess-fl-keyword:=)
 	(ess-R-fl-keyword:F&T . t)))
   )
-
-;; Remove Flymake support 
-;; (setq ess-use-flymake nil)
 
 ;; Flycheck for syntax. Not global
 ;;(setq lintr-modifier-function "with_defaults(line_length_linter=NULL)")
@@ -343,21 +342,37 @@
   (add-to-list 'org-structure-template-alist '("rplot" . "src R :session :file figure-N.png :results value graphics file :results output :exports both"))
   (add-to-list 'org-structure-template-alist '("rexport" . "src R :session :results output :exports both")))
 
-(setq python-shell-interpreter "python3")
+;;(setq python-shell-interpreter "python3")
 
 (use-package elpy
   :if (eq system-type 'gnu/linux)
   :init
   (setq elpy-rpc-python-command "python3")
   :config
-  (elpy-enable))
+  (elpy-enable)
+  (setq python-shell-interpreter "jupyter"
+	python-shell-interpreter-args "console --simple-prompt"
+	python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters
+               "jupyter"))
+
+(use-package jedi)
+
+;; Auto formatting help
+;; Requires to install python "black"
+;; Use it by calling M-x blacken-buffer
+(use-package blacken)
+
+;; Jupyter and iPython
+(use-package ein
+  :hook (ein:connect-mode-hook . ein:jedi-setup))
 
 ;; doom-themes
 (use-package all-the-icons)
 
 (use-package alect-themes
   :config
-  (load-theme 'alect-dark t))
+  (load-theme 'alect-light t))
 
 ;; load a new theme unloading previous first 
 (defun al/load-theme (theme)
