@@ -198,6 +198,8 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
   (yas-global-mode 1))
 
 (use-package neotree)
+(use-package htmlize)
+
 
 (defun tt/wrap ()
      "Shortcut to open neotree directly on wrapper"
@@ -343,7 +345,8 @@ And in general for [[https://lintr.r-lib.org/index.html][lintr]] and [[https://s
   '(define-key company-active-map (kbd "C-c h") #'company-quickhelp-manual-begin))
 #+END_SRC
 
-* Org mode configuration
+* Org mode
+** Base configuration
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
@@ -358,12 +361,6 @@ And in general for [[https://lintr.r-lib.org/index.html][lintr]] and [[https://s
   ;; org clock format
   (setq org-duration-format (quote h:mm))
   (setq org-ellipsis " ≫"))
-   
-;; Bullets
-(use-package org-bullets
-  :config
-  (setq org-bullets-bullet-list '("✙" "✤" "✚" "✜" "✛" "✢" "✣" "✥" "✠" "☥")))
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 ;; --- ORG BABEL ---
 (org-babel-do-load-languages
@@ -374,7 +371,19 @@ And in general for [[https://lintr.r-lib.org/index.html][lintr]] and [[https://s
 
 (if (eq system-type 'windows-nt)
     (setq org-babel-R-command "C:/Users/teodorm3/Bin/R-4.2.1/bin/x64/R --slave --no-save"))
+#+end_src
 
+** Bullets
+#+begin_src emacs-lisp
+;; Bullets
+(use-package org-bullets
+  :config
+  (setq org-bullets-bullet-list '("✙" "✤" "✚" "✜" "✛" "✢" "✣" "✥" "✠" "☥")))
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+** org-tempo for templates
+#+begin_src emacs-lisp
 (use-package org-tempo
   :ensure nil
   :config
@@ -392,6 +401,10 @@ And in general for [[https://lintr.r-lib.org/index.html][lintr]] and [[https://s
   (add-to-list 'org-structure-template-alist '("rexport" . "src R :session :results output :exports both")))
 #+END_SRC
 
+** org-transclusion
+#+begin_src emacs-lisp
+(use-package org-transclusion)
+#+end_src
 * Python3
 #+BEGIN_SRC emacs-lisp
 (setq python-shell-interpreter "python3")
