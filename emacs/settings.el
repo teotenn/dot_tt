@@ -106,63 +106,64 @@
 (use-package magit)
 
 ;; load screenshot script
-  ;; cloned from https://github.com/tecosaur/screenshot
-  ;; Require pckgs <transient> and <posframe>
-  (defun tt/load-screenshot()
-    (interactive)
-    (load "~/.emacs.d/scripts/screenshot.el"))
+    ;; cloned from https://github.com/tecosaur/screenshot
+    ;; Require pckgs <transient> and <posframe>
+    (defun tt/load-screenshot()
+      (interactive)
+      (load "~/.emacs.d/scripts/screenshot.el"))
 
-  ;; load highlight-symbol
-  (defun tt/load-highlight-symbol()
-    (interactive)
-    (load "~/.emacs.d/scripts/highlight-symbol.el"))
+    ;; load highlight-symbol
+    (defun tt/load-highlight-symbol()
+      (interactive)
+      (load "~/.emacs.d/scripts/highlight-symbol.el"))
 
-  ;; Lisp interpreter (for slime and sly)
-  ;; (use-package slime
-  ;;   :if (eq system-type 'windows-nt)
-  ;;   :ensure nil
-  ;;   :disabled)
+    ;; Lisp interpreter (for slime and sly)
+    ;; (use-package slime
+    ;;   :if (eq system-type 'windows-nt)
+    ;;   :ensure nil
+    ;;   :disabled)
 
-  ;; (use-package slime
-  ;;   :if (eq system-type 'gnu/linux)
-  ;;   :init
-  ;;   (setq inferior-lisp-program "sbcl"))
+    ;; (use-package slime
+    ;;   :if (eq system-type 'gnu/linux)
+    ;;   :init
+    ;;   (setq inferior-lisp-program "sbcl"))
 
-  ;; rainbow-delimiters
-  (use-package rainbow-delimiters
-    :hook (prog-mode . rainbow-delimiters-mode)
-    :config
-    (custom-set-faces
-     '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue3"))))
-     '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse4"))))
-     '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "linen"))))
-     '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
-     '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SteelBlue2"))))
-     '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
-     '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "DimGray"))))
-     '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "bisque"))))))
+    ;; rainbow-delimiters
+    (use-package rainbow-delimiters
+      :hook (prog-mode . rainbow-delimiters-mode)
+      :config
+      (custom-set-faces
+       '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue3"))))
+       '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse4"))))
+       '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "linen"))))
+       '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
+       '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SteelBlue2"))))
+       '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
+       '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "DimGray"))))
+       '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "bisque"))))))
 
-  ;; yasnippet
-  (use-package yasnippet
-    :init
-    (setq yas-snippet-dirs
-	  '("~/.emacs.d/snippets"
-	    "~/Code/dot_tt/emacs/snippets"
-	    ))
-    :config
-    (yas-global-mode 1))
+    ;; yasnippet
+(use-package yasnippet
+  :init
+  (setq yas-snippet-dirs
+	'("~/.emacs.d/snippets"
+	  "~/Code/dot_tt/emacs/snippets"
+	  ))
+  :config
+  (yas-global-mode 1))
 
-  (use-package neotree)
+(use-package neotree)
+(use-package htmlize)
 
 (use-package all-the-icons
   :if (display-graphic-p))
 
-  (defun tt/wrap ()
-       "Shortcut to open neotree directly on wrapper"
-       (interactive)
-       (if (eq system-type 'windows-nt)
-	   (neotree-dir "c:/Users/teodorm3/Documents/Wrapper")
-	 (message "tt/wrap is available only on Windows")))
+(defun tt/wrap ()
+  "Shortcut to open neotree directly on wrapper"
+  (interactive)
+  (if (eq system-type 'windows-nt)
+      (neotree-dir "c:/Users/teodorm3/Documents/Wrapper")
+    (message "tt/wrap is available only on Windows")))
 
 ;; My lintr::linters
 (setq tt/lintr-linters
@@ -302,12 +303,6 @@
   (setq org-duration-format (quote h:mm))
   (setq org-ellipsis " ≫"))
 
-;; Bullets
-(use-package org-bullets
-  :config
-  (setq org-bullets-bullet-list '("✙" "✤" "✚" "✜" "✛" "✢" "✣" "✥" "✠" "☥")))
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-
 ;; --- ORG BABEL ---
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -321,7 +316,12 @@
 
 (if (eq system-type 'windows-nt)
     (setq org-babel-R-command "C:/Users/teodorm3/Bin/R-4.2.1/bin/x64/R --slave --no-save"))
-;; --- END ORG BABEL ---
+
+;; Bullets
+(use-package org-bullets
+  :config
+  (setq org-bullets-bullet-list '("✙" "✤" "✚" "✜" "✛" "✢" "✣" "✥" "✠" "☥")))
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (use-package org-tempo
   :ensure nil
@@ -341,6 +341,8 @@
   (add-to-list 'org-structure-template-alist '("rtibble" . "src R :session :results table :colnames yes :exports both"))
   (add-to-list 'org-structure-template-alist '("rplot" . "src R :session :file figure-N.png :results value graphics file :results output :exports both"))
   (add-to-list 'org-structure-template-alist '("rexport" . "src R :session :results output :exports both")))
+
+(use-package org-transclusion)
 
 ;;(setq python-shell-interpreter "python3")
 
