@@ -143,20 +143,20 @@
        '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "bisque"))))))
 
     ;; yasnippet
-(use-package yasnippet
-  :init
-  (setq yas-snippet-dirs
-	'("~/.emacs.d/snippets"
-	  "~/Code/dot_tt/emacs/snippets"
-	  ))
-  :config
-  (yas-global-mode 1))
+    (use-package yasnippet
+      :init
+      (setq yas-snippet-dirs
+	    '("~/.emacs.d/snippets"
+	      "~/Code/dot_tt/emacs/snippets"
+	      ))
+      :config
+      (yas-global-mode 1))
 
 (use-package neotree)
 (use-package htmlize)
 
-(use-package all-the-icons
-  :if (display-graphic-p))
+  (use-package all-the-icons
+    :if (display-graphic-p))
 
 (use-package imenu-list
   :bind (("C-c m" . imenu-list-smart-toggle))
