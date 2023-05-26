@@ -158,6 +158,11 @@
 (use-package all-the-icons
   :if (display-graphic-p))
 
+(use-package imenu-list
+  :bind (("C-c m" . imenu-list-smart-toggle))
+  :config
+  (setq imenu-list-focus-after-activation t))
+
 (defun tt/wrap ()
   "Shortcut to open neotree directly on wrapper"
   (interactive)

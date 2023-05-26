@@ -207,6 +207,11 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 (use-package all-the-icons
   :if (display-graphic-p))
 
+(use-package imenu-list
+  :bind (("C-c m" . imenu-list-smart-toggle))
+  :config
+  (setq imenu-list-focus-after-activation t))
+
 (defun tt/wrap ()
   "Shortcut to open neotree directly on wrapper"
   (interactive)
