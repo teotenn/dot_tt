@@ -158,12 +158,17 @@
   (use-package all-the-icons
     :if (display-graphic-p))
 
-    (defun tt/wrap ()
-	 "Shortcut to open neotree directly on wrapper"
-	 (interactive)
-	 (if (eq system-type 'windows-nt)
-	     (neotree-dir "c:/Users/teodorm3/Documents/Wrapper")
-	   (message "tt/wrap is available only on Windows")))
+(use-package imenu-list
+  :bind (("C-c m" . imenu-list-smart-toggle))
+  :config
+  (setq imenu-list-focus-after-activation t))
+
+(defun tt/wrap ()
+  "Shortcut to open neotree directly on wrapper"
+  (interactive)
+  (if (eq system-type 'windows-nt)
+      (neotree-dir "c:/Users/teodorm3/Documents/Wrapper")
+    (message "tt/wrap is available only on Windows")))
 
 ;; My lintr::linters
 (setq tt/lintr-linters
