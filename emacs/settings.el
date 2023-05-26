@@ -152,13 +152,8 @@
       :config
       (yas-global-mode 1))
 
-<<<<<<< HEAD
-    (use-package neotree)
-=======
 (use-package neotree)
 (use-package htmlize)
-
->>>>>>> win
 
   (use-package all-the-icons
     :if (display-graphic-p))
