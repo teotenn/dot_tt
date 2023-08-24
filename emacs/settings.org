@@ -239,7 +239,7 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
     :if (eq system-type 'windows-nt)
     :init
     (setq ess-use-flymake nil)
-    (setq inferior-ess-r-program "C:/Users/teodorm3/Bin/R-4.2.1/bin/R.exe"))
+    (setq inferior-ess-r-program "C:/Users/teodorm3/Bin/R-4.1.2/bin/R.exe"))
 
   (use-package ess
     :init
