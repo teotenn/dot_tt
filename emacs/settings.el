@@ -105,6 +105,12 @@
 
 (use-package magit)
 
+;; Config for windows
+(if (eq system-type 'windows-nt)
+    (use-package ssh-agency))
+(if (eq system-type 'windows-nt)
+    (setenv "SSH_ASKPASS" "git-gui--askpass"))
+
 ;; load screenshot script
     ;; cloned from https://github.com/tecosaur/screenshot
     ;; Require pckgs <transient> and <posframe>
@@ -382,7 +388,7 @@
   (load-theme 'alect-light t))
 
 ;; load a new theme unloading previous first 
-(defun al/load-theme (theme)
+(defun tt/load-theme (theme)
   "Similar to `load-theme' except it unloads the current themes at first."
   (interactive
    (list (intern (completing-read
