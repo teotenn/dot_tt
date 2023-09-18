@@ -161,6 +161,13 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 * Magit
 #+begin_src emacs-lisp
 (use-package magit)
+
+;; Config for windows
+(if (eq system-type 'windows-nt)
+    (use-package ssh-agency))
+(if (eq system-type 'windows-nt)
+    (setenv "SSH_ASKPASS" "git-gui--askpass"))
+
 #+end_src
 * Other packages
 #+BEGIN_SRC emacs-lisp
@@ -482,7 +489,7 @@ More on python on emacs [[https://realpython.com/emacs-the-best-python-editor/#e
   (load-theme 'alect-light t))
 
 ;; load a new theme unloading previous first 
-(defun al/load-theme (theme)
+(defun tt/load-theme (theme)
   "Similar to `load-theme' except it unloads the current themes at first."
   (interactive
    (list (intern (completing-read
