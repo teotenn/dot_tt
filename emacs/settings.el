@@ -68,9 +68,19 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; Changelog
-(setq add-log-full-name "Manuel Teodoro")
-(setq change-log-default-name "CHANGELOG")
+;; Changelog on Linux systems
+(if (eq system-type 'gnu/linux)
+    (progn
+      (setq add-log-full-name "Manuel Teodoro")
+      (setq add-log-mailing-address "teotenn@proton.me")
+      (setq change-log-default-name "CHANGELOG")))
+
+(add-hook 'change-log-mode-hook
+	  (lambda ()
+	    (make-local-variable 'tab-width)
+	    (make-local-variable 'left-margin)
+	    (setq tab-width   2
+		  left-margin 2)))
 
 ;; Shell warning indentation off
 (advice-add 'sh-set-shell :around
@@ -112,43 +122,46 @@
     (setenv "SSH_ASKPASS" "git-gui--askpass"))
 
 ;; load screenshot script
-    ;; cloned from https://github.com/tecosaur/screenshot
-    ;; Require pckgs <transient> and <posframe>
-    (defun tt/load-screenshot()
-      (interactive)
-      (load "~/.emacs.d/scripts/screenshot.el"))
+;; cloned from https://github.com/tecosaur/screenshot
+;; Require pckgs <transient> and <posframe>
+(use-package transient)
+(use-package posframe)
 
-    ;; load highlight-symbol
-    (defun tt/load-highlight-symbol()
-      (interactive)
-      (load "~/.emacs.d/scripts/highlight-symbol.el"))
+(defun tt/load-screenshot()
+  (interactive)
+  (load "~/.emacs.d/scripts/screenshot/screenshot.el"))
 
-    ;; Lisp interpreter (for slime and sly)
-    ;; (use-package slime
-    ;;   :if (eq system-type 'windows-nt)
-    ;;   :ensure nil
-    ;;   :disabled)
+;; load highlight-symbol
+(defun tt/load-highlight-symbol()
+  (interactive)
+  (load "~/.emacs.d/scripts/highlight-symbol.el"))
 
-    ;; (use-package slime
-    ;;   :if (eq system-type 'gnu/linux)
-    ;;   :init
-    ;;   (setq inferior-lisp-program "sbcl"))
+;; Lisp interpreter (for slime and sly)
+;; (use-package slime
+;;   :if (eq system-type 'windows-nt)
+;;   :ensure nil
+;;   :disabled)
 
-    ;; rainbow-delimiters
-    (use-package rainbow-delimiters
-      :hook (prog-mode . rainbow-delimiters-mode)
-      :config
-      (custom-set-faces
-       '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue3"))))
-       '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse4"))))
-       '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "linen"))))
-       '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
-       '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SteelBlue2"))))
-       '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
-       '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "DimGray"))))
-       '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "bisque"))))))
+;; (use-package slime
+;;   :if (eq system-type 'gnu/linux)
+;;   :init
+;;   (setq inferior-lisp-program "sbcl"))
 
-    ;; yasnippet
+;; rainbow-delimiters
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode)
+  :config
+  (custom-set-faces
+   '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue3"))))
+   '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse4"))))
+   '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "linen"))))
+   '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
+   '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SteelBlue2"))))
+   '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
+   '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "DimGray"))))
+   '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "bisque"))))))
+
+;; yasnippet
 (use-package yasnippet
   :init
   (setq yas-snippet-dirs
@@ -158,9 +171,13 @@
   :config
   (yas-global-mode 1))
 
+;; neotree
 (use-package neotree)
+
+;; htmlize to improve rendering of source code blocks
 (use-package htmlize)
 
+;; all the icons
 (use-package all-the-icons
   :if (display-graphic-p))
 
@@ -169,6 +186,7 @@
   :config
   (setq imenu-list-focus-after-activation t))
 
+;; personal function for windows
 (defun tt/wrap ()
   "Shortcut to open neotree directly on wrapper"
   (interactive)
@@ -578,6 +596,9 @@
   ;; (setq world-clock-timer-second 60)
 
   (add-hook 'after-init-hook #'display-time-mode))
+
+(use-package esh-autosuggest
+  :hook (eshell-mode . esh-autosuggest-mode))
 
 ;; Using garbage magic hack.
  (use-package gcmh
