@@ -171,6 +171,9 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 #+end_src
 * Other packages
 #+BEGIN_SRC emacs-lisp
+;; csv-mode is not default anymore
+(use-package csv-mode)
+
 ;; load screenshot script
 ;; cloned from https://github.com/tecosaur/screenshot
 ;; Require pckgs <transient> and <posframe>
@@ -912,3 +915,34 @@ Deprecated when I learned to work with bookmarks
 ** DONE Move all conf to use-package
 ** DONE Move backup files to some tmp folder
 ** DONE Make ess always start RStudio style (works on debian, not on win)
+* Tests
+** Exploring Discover for ESS
+Project is in the github repo [[https://github.com/mickeynp/discover.el][discover.el]] which is abandoned.
+We need to clone it and re factor it.
+#+begin_src
+(declare-function discover-add-context-menu "discover")
+
+(defun discover-ess-r ()
+  "A `discover' attachment to `ess-r-mode'."
+  (interactive)
+  (when (require 'discover nil :noerror)
+    (discover-add-context-menu
+     :bind "C-c h"
+     :mode 'ess-r-mode
+     :mode-hook 'ess-r-mode-hook
+     :context-menu
+     '(ess
+       (description "Test discover in ESS")
+       (actions
+        ("Movement"
+         ("a" "Move to start of fun or paragraph" ess-goto-beginning-of-function-or-para)
+	 ("e" "Move to end of fun or paragraph" ess-goto-end-of-function-or-para))
+	("Evaluation"
+	 ("b" "Eval Buffer" ess-eval-buffer)
+	 ("j" "Eval Line" ess-eval-line))
+        ("Views"
+         ("h" "View mode help/keybindings" describe-mode)))))))
+
+
+;(provide 'discover-ess-r)
+#+end_src
