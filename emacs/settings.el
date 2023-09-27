@@ -68,9 +68,19 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; Changelog
-(setq add-log-full-name "Manuel Teodoro")
-(setq change-log-default-name "CHANGELOG")
+;; Changelog on Linux systems
+(if (eq system-type 'gnu/linux)
+    (progn
+      (setq add-log-full-name "Manuel Teodoro")
+      (setq add-log-mailing-address "teotenn@proton.me")
+      (setq change-log-default-name "CHANGELOG")))
+
+(add-hook 'change-log-mode-hook
+	  (lambda ()
+	    (make-local-variable 'tab-width)
+	    (make-local-variable 'left-margin)
+	    (setq tab-width   2
+		  left-margin 2)))
 
 ;; Shell warning indentation off
 (advice-add 'sh-set-shell :around
@@ -578,6 +588,9 @@
   ;; (setq world-clock-timer-second 60)
 
   (add-hook 'after-init-hook #'display-time-mode))
+
+(use-package esh-autosuggest
+  :hook (eshell-mode . esh-autosuggest-mode))
 
 ;; Using garbage magic hack.
  (use-package gcmh
