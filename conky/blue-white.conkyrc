@@ -56,7 +56,7 @@ ${if_match ${swapperc} <= 50}${color2}${swapbar}${else} ${if_match ${swapperc} <
 ## SECTION GIT
 ${color1}$alignc --- GIT ---
 ## PersonalFinances
-${color2}${exec git --git-dir /mnt/stein/Projects/toys/PersonalFinances/.git branch --show-current} ${color2}$alignr Mapic
+${color2}${exec git --git-dir /mnt/stein/Projects/toys/PersonalFinances/.git branch --show-current} ${color2}$alignr P-Finances
 $color ${exec git --git-dir /mnt/stein/Projects/toys/PersonalFinances/.git log -1  --pretty=format:"%s"}
 ## dot_tt
 ${color2}${exec git --git-dir ~/Code/dot_tt/.git branch --show-current} ${color2}$alignr dot_tt
