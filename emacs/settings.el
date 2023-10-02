@@ -121,7 +121,10 @@
 (if (eq system-type 'windows-nt)
     (setenv "SSH_ASKPASS" "git-gui--askpass"))
 
-;; load screenshot script
+;; csv-mode is not default anymore
+(use-package csv-mode)
+
+    ;; load screenshot script
     ;; cloned from https://github.com/tecosaur/screenshot
     ;; Require pckgs <transient> and <posframe>
     (defun tt/load-screenshot()
@@ -393,20 +396,38 @@
 ;; doom-themes
 (use-package all-the-icons)
 
-(use-package alect-themes
+;;; For packaged versions which must use `require'.
+(use-package modus-themes
+  :ensure t
   :config
-  (load-theme 'alect-light t))
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-italic-constructs t
+        modus-themes-bold-constructs t)
 
-;; load a new theme unloading previous first 
-(defun tt/load-theme (theme)
-  "Similar to `load-theme' except it unloads the current themes at first."
-  (interactive
-   (list (intern (completing-read
-                  "Load custom theme: "
-                  (mapcar #'symbol-name (custom-available-themes))))))
-  (mapc #'disable-theme custom-enabled-themes)
-  (load-theme theme t)
-  (message "Current theme: '%S'." theme))
+  ;; Maybe define some palette overrides, such as by using our presets
+  ;; (setq modus-themes-common-palette-overrides
+  ;;       modus-themes-preset-overrides-intense)
+
+  ;; Load the theme of your choice.
+  (load-theme 'modus-vivendi-tinted :no-confirm)
+
+  (define-key global-map (kbd "<f5>") #'modus-themes-select))
+
+
+;; (use-package alect-themes
+;;   :config
+;;   (load-theme 'alect-light t))
+
+;; ;; load a new theme unloading previous first 
+;; (defun tt/load-theme (theme)
+;;   "Similar to `load-theme' except it unloads the current themes at first."
+;;   (interactive
+;;    (list (intern (completing-read
+;;                   "Load custom theme: "
+;;                   (mapcar #'symbol-name (custom-available-themes))))))
+;;   (mapc #'disable-theme custom-enabled-themes)
+;;   (load-theme theme t)
+;;   (message "Current theme: '%S'." theme))
 
 (use-package counsel
   :after ivy
