@@ -121,6 +121,9 @@
 (if (eq system-type 'windows-nt)
     (setenv "SSH_ASKPASS" "git-gui--askpass"))
 
+;; csv-mode is not default anymore
+(use-package csv-mode)
+
 ;; load screenshot script
 ;; cloned from https://github.com/tecosaur/screenshot
 ;; Require pckgs <transient> and <posframe>
