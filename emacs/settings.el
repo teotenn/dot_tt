@@ -155,14 +155,16 @@
   :hook (prog-mode . rainbow-delimiters-mode)
   :config
   (custom-set-faces
-   '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue3"))))
+   '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "firebrick3"))))
    '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse4"))))
-   '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "linen"))))
-   '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
-   '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SteelBlue2"))))
-   '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
-   '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "DimGray"))))
-   '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "bisque"))))))
+   '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "medium orchid"))))
+   '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "HotPink1"))))
+   '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SystemHilight"))))
+   '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "gray55"))))
+   '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "firebrick1"))))
+   '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
+   '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
+   ))
 
 ;; yasnippet
 (use-package yasnippet
@@ -401,9 +403,10 @@
 (use-package ein
   :hook (ein:connect-mode-hook . ein:jedi-setup))
 
-;; doom-themes
+;; All the icons
 (use-package all-the-icons)
 
+;; Modus Themes ---
 ;;; For packaged versions which must use `require'.
 (use-package modus-themes
   :ensure t
@@ -422,6 +425,7 @@
   (define-key global-map (kbd "<f5>") #'modus-themes-select))
 
 
+;; Alect Themes
 ;; (use-package alect-themes
 ;;   :config
 ;;   (load-theme 'alect-light t))
