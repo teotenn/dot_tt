@@ -55,15 +55,15 @@ ${if_match ${swapperc} <= 50}${color2}${swapbar}${else} ${if_match ${swapperc} <
 ##
 ## SECTION GIT
 ${color1}$alignc --- GIT ---
-## Personal Config
-${color2}${exec git --git-dir ~/Code/personal_config/.git branch --show-current} ${color2}$alignr Personal
-$color ${exec git --git-dir ~/Code/personal_config/.git log -1  --pretty=format:"%s"}
+## PersonalFinances
+${color2}${exec git --git-dir /mnt/stein/Projects/toys/PersonalFinances/.git branch --show-current} ${color2}$alignr P-Finances
+$color ${exec git --git-dir /mnt/stein/Projects/toys/PersonalFinances/.git log -1  --pretty=format:"%s"}
 ## dot_tt
 ${color2}${exec git --git-dir ~/Code/dot_tt/.git branch --show-current} ${color2}$alignr dot_tt
 $color ${exec git --git-dir ~/Code/dot_tt/.git log -1  --pretty=format:"%s"}
 ## Blog
-${color2}${exec git --git-dir /mnt/stein/Projects/blog/.git branch --show-current} ${color2}$alignr Blog
-$color ${exec git --git-dir /mnt/stein/Projects/blog/.git log -1  --pretty=format:"%s"}
+${color2}${exec git --git-dir /mnt/stein/Projects/teoten.com/blog/.git branch --show-current} ${color2}$alignr Blog
+$color ${exec git --git-dir /mnt/stein/Projects/teoten.com/blog/.git log -1  --pretty=format:"%s"}
 ## Mapic
 ${color2}${exec git --git-dir /mnt/stein/Projects/mapic/.git branch --show-current} ${color2}$alignr Mapic
 $color ${exec git --git-dir /mnt/stein/Projects/mapic/.git log -1  --pretty=format:"%s"}
