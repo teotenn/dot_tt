@@ -59,8 +59,18 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 #+BEGIN_SRC emacs-lisp
 ;; Stop the welcome screen
 (setq inhibit-startup-screen t)
-;; Hide toolbar
+;; Hide toolbar, scrollbar and menu
 (tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
+
+;; Keybindings to toggle 
+(global-set-key (kbd "M-<f2> n") 'display-line-numbers-mode)
+(global-set-key (kbd "M-<f2> t") 'tool-bar-mode)
+(global-set-key (kbd "M-<f2> s") 'scroll-bar-mode)
+(global-set-key (kbd "M-<f2> m") 'menu-bar-mode)
+;(global-set-key (kbd "C-<f2> N") 'prog-mode-display-line-numbers-mode)
+
 ;; Allows mark-type-delete
 (delete-selection-mode t)
 
@@ -73,7 +83,6 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 
 ;; enable column numbers
 (setq column-number-mode t)
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 ;; show-paren-mode
 (show-paren-mode 1)
@@ -127,6 +136,9 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
             (lambda (orig-fun &rest args)
               (cl-letf (((symbol-function 'message) #'ignore))
                 (apply orig-fun args))))
+
+;; Extra code
+(add-to-list 'load-path "~/Code/dot_tt/emacs/scripts/")
 #+END_SRC
 
 * Spell checking
@@ -182,12 +194,7 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 
 (defun tt/load-screenshot()
   (interactive)
-  (load "~/.emacs.d/scripts/screenshot/screenshot.el"))
-
-;; load highlight-symbol
-(defun tt/load-highlight-symbol()
-  (interactive)
-  (load "~/.emacs.d/scripts/highlight-symbol.el"))
+  (load "screenshot.el"))
 
 ;; Lisp interpreter (for slime and sly)
 ;; (use-package slime
@@ -205,14 +212,16 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
   :hook (prog-mode . rainbow-delimiters-mode)
   :config
   (custom-set-faces
-   '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "blue3"))))
+   '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "firebrick3"))))
    '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse4"))))
-   '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "linen"))))
-   '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
-   '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SteelBlue2"))))
-   '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
-   '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "DimGray"))))
-   '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "bisque"))))))
+   '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "medium orchid"))))
+   '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "HotPink1"))))
+   '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SystemHilight"))))
+   '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "gray55"))))
+   '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "firebrick1"))))
+   '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
+   '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
+   ))
 
 ;; yasnippet
 (use-package yasnippet
@@ -511,7 +520,7 @@ More on python on emacs [[https://realpython.com/emacs-the-best-python-editor/#e
   ;; Load the theme of your choice.
   (load-theme 'modus-vivendi-tinted :no-confirm)
 
-  (define-key global-map (kbd "<f5>") #'modus-themes-select))
+  (define-key global-map (kbd "M-<f2> z") #'modus-themes-select))
 
 
 ;; Alect Themes
@@ -593,59 +602,54 @@ More on python on emacs [[https://realpython.com/emacs-the-best-python-editor/#e
 #+END_SRC
 * mode line
 #+BEGIN_SRC emacs-lisp
-;; Function to beautify with all-the-icons package 
-(defun custom-modeline-time ()
-  (let* ((iweek (all-the-icons-octicon "calendar" 
-				       :height 1.1 
-				       :v-adjust -0.0 
-				       :face 'all-the-icons-green))
-	 (hour (string-to-number (format-time-string "%I"))))
-    (concat
-     (propertize iweek)
-     (propertize (format-time-string "%W|%H:%M ") 'face `(:height 0.9)))))
+(use-package time
+  :ensure nil
+  :config
+  (setq display-time-format "%b/%e %H:%M ")
+  (setq display-time-interval 60)
+  (setq display-time-default-load-average nil)
+  (add-hook 'after-init-hook #'display-time-mode))
 
-;; Count (lines, words)
-(defun custom-modeline-region-info ()
-  (when mark-active
-    (let ((words (count-lines (region-beginning) (region-end)))
-          (chars (count-words (region-end) (region-beginning))))
-      (concat
-       (propertize (format "   %s" (all-the-icons-octicon "pencil") words chars)
-                   'face `(:family ,(all-the-icons-octicon-family))
-                   'display '(raise -0.0))
-       (propertize (format " (%s, %s)" words chars)
-                   'face `(:height 0.9))))))
 
-;; version control NOT SO GOOD
-(defun -custom-modeline-github-vc ()
-  (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
-    (concat
-     (propertize (format " %s" (all-the-icons-alltheicon "git")) 
-		 'display '(raise -0.1))
-     " Â· "
-     (propertize (format "%s" (all-the-icons-octicon "git-branch"))
-                 'face `(:height 1.3 :family ,(all-the-icons-octicon-family))
-                 'display '(raise -0.1))
-     (propertize (format " %s" branch) 'face `(:height 0.9)))))
+;(load "prot-modeline.el")
+(require 'prot-modeline)
+(load "tt-modeline.el")
 
-(defun -custom-modeline-svn-vc ()
-  (let ((revision (cadr (split-string vc-mode "-"))))
-    (concat
-     (propertize (format " %s" (all-the-icons-faicon "cloud")) 'face `(:height 1.2) 'display '(raise -0.1))
-     (propertize (format " Â· %s" revision) 'face `(:height 0.9)))))
+(setq mode-line-compact nil) ; Emacs 28
 
-(defun custom-modeline-icon-vc ()
-  (when vc-mode
-    (cond
-      ((string-match "Git-" vc-mode) (-custom-modeline-github-vc))
-      ((string-match "SVN-" vc-mode) (-custom-modeline-svn-vc))
-      (t (format "%s" vc-mode)))))
+(setq-default mode-line-format
+              '("%e"
+                prot-modeline-kbd-macro
+                prot-modeline-narrow
+                prot-modeline-input-method
+                prot-modeline-buffer-status
+                " "
+                prot-modeline-buffer-identification
+                "  "
+                prot-modeline-major-mode
+                prot-modeline-process
+                "  "
+                prot-modeline-vc-branch
+                "  "
+		mode-line-position
+                "  "
+                prot-modeline-align-right
+		(:eval (custom-modeline-region-info))
+		" "
+                prot-modeline-misc-info))
 
+(prot-modeline-subtle-mode 1)
+#+END_SRC
+
+
+#+BEGIN_SRC 
+(add-to-list 'load-path "~/Code/dot_tt/emacs/scripts/")
+(load "tt-modeline.el")
 ;; -------------------- MODELINE -------------------- ;;
 ;; The formatter
 (setq-default mode-line-format
       (list
-	" "
+	"%e"
 	;; Buffer modified
 	'(:eval (if (buffer-modified-p)
 		    ;; Check icons with C-h v - all-the-icons-data
@@ -656,18 +660,20 @@ More on python on emacs [[https://realpython.com/emacs-the-best-python-editor/#e
 		  (propertize (all-the-icons-faicon "link"))))
 	" "
 	;;'custom-modeline-time
-	'mode-line-position
-	;; Buffer name
-	"%b "
-	;; Modes stay as they are, minions modify it
-	'mode-line-modes
-	;;'mode-line-misc-info
-	'(:eval (custom-modeline-time))
-	;; Version control 
-	'(:eval (custom-modeline-icon-vc))
-	;;'(vc-mode vc-mode)
 	;; Marked region
 	'(:eval (custom-modeline-region-info))
+	" "
+	;; Buffer name
+	;; "%b "
+	prot-modeline-buffer-identification
+	" "
+	;; Modes stay as they are, minions modify it
+	'mode-line-modes
+	;; Version control 
+	'(:eval (custom-modeline-icon-vc))
+	" "
+	;;'mode-line-misc-info
+	'(:eval (custom-modeline-time))
 	))
 
 ;;; Hide modeline "lighters" (minions.el)
@@ -692,17 +698,7 @@ More on python on emacs [[https://realpython.com/emacs-the-best-python-editor/#e
 ;;   ;; (setq display-time-day-and-date t)
 ;;   (setq display-time-interval 120)
 ;;   (setq display-time-default-load-average nil)
-;;   ;; ;; NOTE 2021-04-19: For all those, I have implemented a custom
-;;   ;; ;; solution that also shows the number of new items.  Refer to my
-;;   ;; ;; email settings, specifically `prot-mail-mail-indicator'.
-;;   ;; ;;
-;;   ;; ;; NOTE 2021-05-16: Or better check `prot-notmuch-mail-indicator'.
-;;   (setq display-time-mail-directory nil)
-;;   (setq display-time-mail-function nil)
-;;   (setq display-time-use-mail-icon nil)
-;;   (setq display-time-mail-string "")
-;;   (setq display-time-mail-face nil)
-
+  
 ;;; World clock
   (setq zoneinfo-style-world-list
 	'(("America/Los_Angeles" "San Francisco")
