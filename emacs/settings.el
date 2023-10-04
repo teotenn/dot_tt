@@ -100,6 +100,9 @@
 ;; Extra code
 (add-to-list 'load-path "~/Code/dot_tt/emacs/scripts/")
 
+;; Make eww default browser
+(setq browse-url-browser-function 'eww-browse-url)
+
 ;; Dictionaries
 (use-package flyspell
   :defer t
@@ -206,57 +209,80 @@
       (neotree-dir "c:/Users/teodorm3/Documents/Wrapper")
     (message "tt/wrap is available only on Windows")))
 
-;; My lintr::linters
+;; Flymake
 (setq tt/lintr-linters
       "lintr::linters_with_defaults(
-	 line_length_linter = line_length_linter(120),
-         linters = object_name_linter(styles = c('dotted.case', 'lowercase', 'snake_case'))
-       )"
- )
+	   line_length_linter = line_length_linter(120),
+           linters = object_name_linter(styles = c('dotted.case', 'lowercase', 'snake_case'))
+	 )"
+      )
 
 (use-package flymake
   :config
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 
-(use-package ess
-  :if (eq system-type 'windows-nt)
-  :init
-  (setq ess-use-flymake nil)
-  (setq inferior-ess-r-program "C:/Users/teodorm3/Bin/R-4.1.2/bin/R.exe"))
+;; ESS ------------------------
+;; R on windows
+(if (eq system-type 'windows-nt)
+    (setq inferior-ess-r-program "C:/Users/teodorm3/Bin/R-4.1.2/bin/R.exe"))
 
+;; Personal functions for ess
+(defun tt-inferior-ess-keymap ()
+  "Define a keymap for ESS inferior processes to call prev and next command
+   with C-up and C-down respectively"
+  (setq-local ansi-color-for-comint-mode 'filter)
+  (define-key inferior-ess-mode-map [\C-up]
+	      'comint-previous-matching-input-from-input)
+  (define-key inferior-ess-mode-map [\C-down]
+	      'comint-next-matching-input-from-input)
+  (define-key inferior-ess-mode-map [\C-x \t]
+	      'comint-dynamic-complete-filename))
+
+(defun tt-r-ess-init ()
+  "Sends variable `tt-r-profile' to an ESS process"
+  (let ((proc (ess-get-process)))
+    (ess-send-string proc tt-r-profile)))
+
+(defvar tt-r-profile "
+options(help_type = \"text\")\n
+utils::assignInNamespace(\"q\",
+  function(save = \"no\", status = 0, runLast = TRUE) 
+    {.Internal(quit(save, status, runLast))}, 
+  \"base\")
+")
+
+(defun tt/shiny-run-app ()
+  "Executes shiny <run_app()> in the inferior-ess-r process."
+  (interactive)
+  (let ((proc (ess-get-process)))
+    (ess-send-string proc "run_app()")))
+
+;; ESS config
 (use-package ess
   :init
   (setq ess-style 'RStudio)
+  :hook ((inferior-ess-mode . tt-inferior-ess-keymap)
+	 (ess-r-post-run . tt-r-ess-init))
+  :bind (("C-c <f5>" . tt/shiny-run-app))
   :config
   (setq ess-r-flymake-linters tt/lintr-linters)
+  (setq ess-use-flymake nil)
   (setq ess-eval-visibly-p t) ; ESS process (print all)
   (setq ess-ask-for-ess-directory nil)
-  ;; Package manipulation
-  ;; (setq ess-r-package-auto-enable-namespaced-evaluation nil)
-  ;; R console hook
-  (defun my-inferior-ess-init ()
-    (setq-local ansi-color-for-comint-mode 'filter)
-    (define-key inferior-ess-mode-map [\C-up]
-      'comint-previous-matching-input-from-input)
-    (define-key inferior-ess-mode-map [\C-down]
-      'comint-next-matching-input-from-input)
-    (define-key inferior-ess-mode-map [\C-x \t]
-      'comint-dynamic-complete-filename))
-  (add-hook 'inferior-ess-mode-hook 'my-inferior-ess-init)
-  ;; Syntax highlight
+  ;; Syntax highlights
   (setq ess-R-font-lock-keywords
-      '((ess-R-fl-keyword:keywords . t)
-	(ess-R-fl-keyword:constants . t)
-	(ess-R-fl-keyword:modifiers . t)
-	(ess-R-fl-keyword:fun-defs . t)
-	(ess-R-fl-keyword:assign-ops . t)
-	(ess-R-fl-keyword:%op% . t)
-	(ess-fl-keyword:fun-calls . t)
-	(ess-fl-keyword:numbers . t)
-	(ess-fl-keyword:operators)
-	(ess-fl-keyword:delimiters)
-	(ess-fl-keyword:=)
-	(ess-R-fl-keyword:F&T . t)))
+	'((ess-R-fl-keyword:keywords . t)
+	  (ess-R-fl-keyword:constants . t)
+	  (ess-R-fl-keyword:modifiers . t)
+	  (ess-R-fl-keyword:fun-defs . t)
+	  (ess-R-fl-keyword:assign-ops . t)
+	  (ess-R-fl-keyword:%op% . t)
+	  (ess-fl-keyword:fun-calls . t)
+	  (ess-fl-keyword:numbers . t)
+	  (ess-fl-keyword:operators)
+	  (ess-fl-keyword:delimiters)
+	  (ess-fl-keyword:=)
+	  (ess-R-fl-keyword:F&T . t)))
   )
 
 ;; Flycheck for syntax. Not global
@@ -414,13 +440,13 @@
 (use-package all-the-icons)
 
 ;; Modus Themes ---
-;;; For packaged versions which must use `require'.
 (use-package modus-themes
   :ensure t
   :config
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-italic-constructs t
-        modus-themes-bold-constructs t)
+        modus-themes-bold-constructs t
+	modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
 
   ;; Maybe define some palette overrides, such as by using our presets
   ;; (setq modus-themes-common-palette-overrides
@@ -428,25 +454,8 @@
 
   ;; Load the theme of your choice.
   (load-theme 'modus-vivendi-tinted :no-confirm)
-
-  (define-key global-map (kbd "M-<f2> z") #'modus-themes-select))
-
-
-;; Alect Themes
-;; (use-package alect-themes
-;;   :config
-;;   (load-theme 'alect-light t))
-
-;; ;; load a new theme unloading previous first 
-;; (defun tt/load-theme (theme)
-;;   "Similar to `load-theme' except it unloads the current themes at first."
-;;   (interactive
-;;    (list (intern (completing-read
-;;                   "Load custom theme: "
-;;                   (mapcar #'symbol-name (custom-available-themes))))))
-;;   (mapc #'disable-theme custom-enabled-themes)
-;;   (load-theme theme t)
-;;   (message "Current theme: '%S'." theme))
+  (define-key global-map (kbd "M-<f2> z") #'modus-themes-toggle)
+  (define-key global-map (kbd "M-<f2> Z") #'modus-themes-select))
 
 (use-package counsel
   :after ivy
