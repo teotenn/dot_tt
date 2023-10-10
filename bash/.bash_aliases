@@ -5,6 +5,7 @@ alias wifi-conect='nmcli dev wifi connect'
 # Screen config 
 alias screen-my='xrandr --output LVDS-1 --mode 1280x800 --output VGA-1 --off'
 alias screen-dual='xrandr --output LVDS-1 --mode 1280x800 --output VGA-1 --mode 1920x1080 --left-of LVDS-1'
+alias switch-wallpapers='~/Code/dot_tt/bash/scripts/sirius_xrandr.sh'
 
 # vm's
 alias vm-antiX='cd ~/Code/VM; qemu-system-x86_64 -m 1024 -boot d -enable-kvm -smp 2 -net nic -net user -hda antiX.img'
