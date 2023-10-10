@@ -1,33 +1,32 @@
 #+STARTUP: content
 * Introduction
-
-This file contains the configuration code for my emacs init file 
-in *Linux*.
-
+** Usage
 For it to work it requires the following code in the main emacs
-file (init.el or emacs.el):
+file (=~/.emacs.d/init.el= or =emacs.el=):
 
 #+BEGIN_SRC
 (require 'org)
 (org-babel-load-file
- (expand-file-name "settings.org"
+ (expand-file-name "~/Code/dot_tt/emacs/settings.org"
                    user-emacs-directory))
 #+END_SRC
-
-The example was obtained from a question posted in [[https://emacs.stackexchange.com/questions/3143/can-i-use-org-mode-to-structure-my-emacs-or-other-el-configuration-file?newreg=f5016c9f5ce5446e8cbf740c6a9dadd9][stackexchange]]. In
-the post there are other arguments to take into account for the correct
-usage of this method. So far it works well.
-
-A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-/blob/master/.emacs.d.gnu/config.org#org-mode][Darek Taylor]].
 ** Personal keybindings
    - *M-q* in <org-mode> ='toggle-truncate-lines=
+   - *C-x arrows*  =windmove-(up/right/left/down arrows)=
    - *C-c a* in <org-mode> ='org-agenda=
    - *C-c `* in <markdown-mode> ='rmarkdown-new-chunk=
-   - *C-x arrows*  =windmove-(up/right/left/down arrows)=
-   - *C-x left/right*  =theme-looper-enable-= previous/next
-   - *C-c t* <global> =load-themes=
-   - *C-c p* =projectile-command-map=
-   - A few others not recorded
+   - *C-c j* =tt/select-lines=
+   - *C-c h* Company quick help
+   - *C-c <F5>* shiny run_app()
+   - *C-c c* cheatsheet-show
+   - *C-c m* imenu-list-smart-toggle
+   - *M-<F2>* Toggle commands
+     - *m* menu bar
+     - *t* tool bar
+     - *s* scroll bar
+     - *n* line numbers
+     - *z* modus themes
+     - *Z* modus themes select
 
 * Emacs customization
 ** Emacs init
@@ -138,8 +137,36 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 
 ;; Make eww default browser
 (setq browse-url-browser-function 'eww-browse-url)
+
+;; From emacs 29.1
+(setq show-paren-context-when-offscreen 'overlay)
 #+END_SRC
 
+** Personal funcs
+#+begin_src emacs-lisp
+;; personal function for windows
+(defun tt/wrap ()
+  "Shortcut to open neotree directly on wrapper"
+  (interactive)
+  (if (eq system-type 'windows-nt)
+      (neotree-dir "c:/Users/teodorm3/Documents/Wrapper")
+    (message "tt/wrap is available only on Windows")))
+
+;; Personal registers
+(set-register ?w '(buffer . "workflow.org"))
+
+;; select lines
+(defun tt/select-lines (arg)
+  "Select the current line and ARG lines IF no region is selected.
+If a region is selected, continues the selection from the cursor."
+  (interactive "p")
+  (when (not (use-region-p))
+    (forward-line 0)
+    (set-mark-command nil))
+  (move-end-of-line arg))
+
+(define-key global-map (kbd "C-c j") #'tt/select-lines)
+#+end_src
 * Spell checking
 ** Flyspell
  #+BEGIN_SRC emacs-lisp
@@ -181,6 +208,63 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 
 #+end_src
 * Other packages
+** Cheatsheet
+#+begin_src emacs-lisp
+(use-package cheatsheet
+  :config
+  (cheatsheet-add-group 'Info
+			'(:key "C-x l" :description "count-lines-page"))
+  (cheatsheet-add-group 'Consoles
+			'(:key "M-r" :description "Back search")
+			'(:key "C-c C-l" :description "list previous commands")
+			'(:key "C-c RET" :description "copy NOT execute cmd"))
+  (cheatsheet-add-group 'R
+			'(:key "C-c <F5>" :description "shiny run_app()")
+			'(:key "C-c C-z" :description "move console-script"))
+  (cheatsheet-add-group 'Move
+			'(:key "M-g i" :description "i menu")
+			'(:key "C-c m" :description "imenu-list-smart-toggle")
+			'(:key "C-x o" :description "other-window"))
+  (cheatsheet-add-group 'Edit
+			'(:key "M-h" :description "mark-parragraph")
+			'(:key "C-M-h" :description "mark function")
+			'(:key "M-y" :description "yank-pop")
+			'(:key "C-x C-o" :description "delete-blank-lines")
+			'(:key "C-x n" :description "narrow menu")
+			'(:key "C-x w" :description "widen")
+			'(:key "M-u" :description "make-upcase-at-point")
+			'(:key "C-x C-u" :description "upcase-region")))
+(global-set-key (kbd "C-c c") 'cheatsheet-show)
+#+end_src
+** Rainbow delimiters
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode)
+  :config
+  (custom-set-faces
+   '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "SlateBlue1"))))
+   '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse4"))))
+   '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "medium orchid"))))
+   '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "HotPink1"))))
+   '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SystemHilight"))))
+   '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "gray55"))))
+   '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "firebrick1"))))
+   '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
+   '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
+   ))
+#+end_src
+** yasnippet
+#+begin_src emacs-lisp
+(use-package yasnippet
+  :init
+  (setq yas-snippet-dirs
+	'("~/.emacs.d/snippets"
+	  "~/Code/dot_tt/emacs/snippets"
+	  ))
+  :config
+  (yas-global-mode 1))
+#+end_src
+** Miscellanea 
 #+BEGIN_SRC emacs-lisp
 ;; csv-mode is not default anymore
 (use-package csv-mode)
@@ -206,32 +290,6 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
 ;;   :init
 ;;   (setq inferior-lisp-program "sbcl"))
 
-;; rainbow-delimiters
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode)
-  :config
-  (custom-set-faces
-   '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "firebrick3"))))
-   '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse4"))))
-   '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "medium orchid"))))
-   '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "HotPink1"))))
-   '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SystemHilight"))))
-   '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "gray55"))))
-   '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "firebrick1"))))
-   '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
-   '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
-   ))
-
-;; yasnippet
-(use-package yasnippet
-  :init
-  (setq yas-snippet-dirs
-	'("~/.emacs.d/snippets"
-	  "~/Code/dot_tt/emacs/snippets"
-	  ))
-  :config
-  (yas-global-mode 1))
-
 ;; neotree
 (use-package neotree)
 
@@ -246,14 +304,6 @@ A good init file is the one of the youtuber [[https://gitlab.com/dwt1/dotfiles/-
   :bind (("C-c m" . imenu-list-smart-toggle))
   :config
   (setq imenu-list-focus-after-activation t))
-
-;; personal function for windows
-(defun tt/wrap ()
-  "Shortcut to open neotree directly on wrapper"
-  (interactive)
-  (if (eq system-type 'windows-nt)
-      (neotree-dir "c:/Users/teodorm3/Documents/Wrapper")
-    (message "tt/wrap is available only on Windows")))
 #+END_SRC
 
 * ESS and R
@@ -844,8 +894,6 @@ folder, <txt-file.txt> file"
 
  ;; Load the theme of your choice:
  (modus-themes-load-operandi) ;; OR (modus-themes-load-vivendi)
-
- (define-key global-map (kbd "C-c t") #'modus-themes-toggle)
  #+END_SRC
 ** Other collected
 #+BEGIN_SRC

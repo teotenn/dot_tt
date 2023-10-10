@@ -103,6 +103,32 @@
 ;; Make eww default browser
 (setq browse-url-browser-function 'eww-browse-url)
 
+;; From emacs 29.1
+(setq show-paren-context-when-offscreen 'overlay)
+
+;; personal function for windows
+(defun tt/wrap ()
+  "Shortcut to open neotree directly on wrapper"
+  (interactive)
+  (if (eq system-type 'windows-nt)
+      (neotree-dir "c:/Users/teodorm3/Documents/Wrapper")
+    (message "tt/wrap is available only on Windows")))
+
+;; Personal registers
+(set-register ?w '(buffer . "workflow.org"))
+
+;; select lines
+(defun tt/select-lines (arg)
+  "Select the current line and ARG lines IF no region is selected.
+If a region is selected, continues the selection from the cursor."
+  (interactive "p")
+  (when (not (use-region-p))
+    (forward-line 0)
+    (set-mark-command nil))
+  (move-end-of-line arg))
+
+(define-key global-map (kbd "C-c j") #'tt/select-lines)
+
 ;; Dictionaries
 (use-package flyspell
   :defer t
@@ -136,6 +162,56 @@
 (if (eq system-type 'windows-nt)
     (setenv "SSH_ASKPASS" "git-gui--askpass"))
 
+(use-package cheatsheet
+  :config
+  (cheatsheet-add-group 'Info
+			'(:key "C-x l" :description "count-lines-page"))
+  (cheatsheet-add-group 'Consoles
+			'(:key "M-r" :description "Back search")
+			'(:key "C-c C-l" :description "list previous commands")
+			'(:key "C-c RET" :description "copy NOT execute cmd"))
+  (cheatsheet-add-group 'R
+			'(:key "C-c <F5>" :description "shiny run_app()")
+			'(:key "C-c C-z" :description "move console-script"))
+  (cheatsheet-add-group 'Move
+			'(:key "M-g i" :description "i menu")
+			'(:key "C-c m" :description "imenu-list-smart-toggle")
+			'(:key "C-x o" :description "other-window"))
+  (cheatsheet-add-group 'Edit
+			'(:key "M-h" :description "mark-parragraph")
+			'(:key "C-M-h" :description "mark function")
+			'(:key "M-y" :description "yank-pop")
+			'(:key "C-x C-o" :description "delete-blank-lines")
+			'(:key "C-x n" :description "narrow menu")
+			'(:key "C-x w" :description "widen")
+			'(:key "M-u" :description "make-upcase-at-point")
+			'(:key "C-x C-u" :description "upcase-region")))
+(global-set-key (kbd "C-c c") 'cheatsheet-show)
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode)
+  :config
+  (custom-set-faces
+   '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "SlateBlue1"))))
+   '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse4"))))
+   '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "medium orchid"))))
+   '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "HotPink1"))))
+   '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SystemHilight"))))
+   '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "gray55"))))
+   '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "firebrick1"))))
+   '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
+   '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
+   ))
+
+(use-package yasnippet
+  :init
+  (setq yas-snippet-dirs
+	'("~/.emacs.d/snippets"
+	  "~/Code/dot_tt/emacs/snippets"
+	  ))
+  :config
+  (yas-global-mode 1))
+
 ;; csv-mode is not default anymore
 (use-package csv-mode)
 
@@ -160,32 +236,6 @@
 ;;   :init
 ;;   (setq inferior-lisp-program "sbcl"))
 
-;; rainbow-delimiters
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode)
-  :config
-  (custom-set-faces
-   '(rainbow-delimiters-depth-1-face ((t (:inherit rainbow-delimiters-base-face :foreground "firebrick3"))))
-   '(rainbow-delimiters-depth-2-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse4"))))
-   '(rainbow-delimiters-depth-3-face ((t (:inherit rainbow-delimiters-base-face :foreground "medium orchid"))))
-   '(rainbow-delimiters-depth-4-face ((t (:inherit rainbow-delimiters-base-face :foreground "HotPink1"))))
-   '(rainbow-delimiters-depth-5-face ((t (:inherit rainbow-delimiters-base-face :foreground "SystemHilight"))))
-   '(rainbow-delimiters-depth-6-face ((t (:inherit rainbow-delimiters-base-face :foreground "gray55"))))
-   '(rainbow-delimiters-depth-7-face ((t (:inherit rainbow-delimiters-base-face :foreground "firebrick1"))))
-   '(rainbow-delimiters-depth-8-face ((t (:inherit rainbow-delimiters-base-face :foreground "chartreuse2"))))
-   '(rainbow-delimiters-depth-9-face ((t (:inherit rainbow-delimiters-base-face :foreground "purple3"))))
-   ))
-
-;; yasnippet
-(use-package yasnippet
-  :init
-  (setq yas-snippet-dirs
-	'("~/.emacs.d/snippets"
-	  "~/Code/dot_tt/emacs/snippets"
-	  ))
-  :config
-  (yas-global-mode 1))
-
 ;; neotree
 (use-package neotree)
 
@@ -200,14 +250,6 @@
   :bind (("C-c m" . imenu-list-smart-toggle))
   :config
   (setq imenu-list-focus-after-activation t))
-
-;; personal function for windows
-(defun tt/wrap ()
-  "Shortcut to open neotree directly on wrapper"
-  (interactive)
-  (if (eq system-type 'windows-nt)
-      (neotree-dir "c:/Users/teodorm3/Documents/Wrapper")
-    (message "tt/wrap is available only on Windows")))
 
 ;; Flymake
 (setq tt/lintr-linters
