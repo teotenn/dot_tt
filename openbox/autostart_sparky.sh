@@ -6,11 +6,11 @@ fi
 #if [ -f /usr/bin/nitrogen ]; then
 #nitrogen --restore &
 #fi
-if [ -f /usr/bin/tint2 ]; then
-tint2 &
-elif [ -f /usr/bin/fbpanel ]; then
-fbpanel &
-fi
+# if [ -f /usr/bin/tint2 ]; then
+# tint2 &
+# elif [ -f /usr/bin/fbpanel ]; then
+# fbpanel &
+# fi
 if [ -f /usr/bin/xscreensaver ]; then
 xscreensaver -nosplash &
 fi
