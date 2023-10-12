@@ -29,7 +29,7 @@
 (global-set-key (kbd "M-<f2> t") 'tool-bar-mode)
 (global-set-key (kbd "M-<f2> s") 'scroll-bar-mode)
 (global-set-key (kbd "M-<f2> m") 'menu-bar-mode)
-;(global-set-key (kbd "C-<f2> N") 'prog-mode-display-line-numbers-mode)
+					;(global-set-key (kbd "C-<f2> N") 'prog-mode-display-line-numbers-mode)
 
 ;; Allows mark-type-delete
 (delete-selection-mode t)
@@ -59,7 +59,7 @@
 ;; always allow 'y' instead of 'yes'.
 (setq use-short-answers t)
 
-; default to utf-8 for all the things
+					; default to utf-8 for all the things
 (set-charset-priority 'unicode)
 (setq locale-coding-system 'utf-8
       coding-system-for-read 'utf-8
@@ -73,7 +73,7 @@
 ;; Backup files in ~/tmp/
 (setq temporary-file-directory "~/tmp/")
 (setq backup-directory-alist
-          `((".*" . ,temporary-file-directory)))
+      `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
@@ -107,13 +107,15 @@
 (setq show-paren-context-when-offscreen 'overlay)
 
 ;; Select Font
-(cond
- ((find-font (font-spec :name "Jetbrains Mono"))
-  (set-frame-font "Jetbrains Mono 12"))
- ((find-font (font-spec :name "Montserrat"))
-  (set-frame-font "Montserrat 12"))
- ((find-font (font-spec :name "Cascadia Mono"))
-  (set-frame-font "Monospace 13")))
+(defun tt/find-font ()
+  (cond
+   ((find-font (font-spec :name "Jetbrains Mono"))
+    (set-frame-font "Jetbrains Mono 12"))
+   ((find-font (font-spec :name "Montserrat"))
+    (set-frame-font "Montserrat 12"))
+   ((find-font (font-spec :name "Cascadia Mono"))
+    (set-frame-font "Monospace 13"))))
+(tt/find-font)
 
 ;; personal function for windows
 (defun tt/wrap ()
