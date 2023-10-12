@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 #
 # A rofi powered menu to execute power related action.
-# Uses: amixer mpc poweroff reboot rofi rofi-prompt
+## Examples: https://github.com/adi1090x/rofi/tree/master/files/powermenu/type-2
 ## Needs to install font
 
 power_off=⏻

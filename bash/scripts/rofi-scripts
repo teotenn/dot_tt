@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+selected=$(ls ~/Code/dot_tt/bash/scripts/|rofi -dmenu -p "Run: " -theme ~/Code/dot_tt/rofi/spotlight-dark.rasi)
+/bin/bash $selected
