@@ -1,0 +1,54 @@
+#!/usr/bin/env sh
+#
+# A rofi powered menu to execute power related action.
+# Uses: amixer mpc poweroff reboot rofi rofi-prompt
+## Needs to install font
+
+power_off=⏻
+reboot=⟳
+lock=🔒
+suspend=⏾
+log_out=⚠
+
+# CMDs
+uptime="`uptime -p | sed -e 's/up //g'`"
+
+chosen=$(printf '%s;%s;%s;%s;%s\n' "$power_off" "$reboot" "$lock" "$suspend" \
+                                   "$log_out" \
+	     | rofi -theme-str 'window {location: center; anchor: center; fullscreen: false;}' \
+		    -theme-str 'mainbox {children: [ "message", "listview" ];}' \
+		    -theme-str 'listview {columns: 5; lines: 1;}' \
+		    -theme-str 'element-text {horizontal-align: 0.5;}' \
+		    -theme-str 'textbox {horizontal-align: 0.5;}' \
+		    -dmenu \
+		    -p "Uptime: $uptime" \
+		    -mesg "Uptime: $uptime" \
+		    -sep ';' \
+		    -theme $HOME/Code/dot_tt/rofi/style-2.rasi \
+		    -selected-row 3)
+
+case "$chosen" in
+    "$power_off")
+        systemctl poweroff
+        ;;
+
+    "$reboot")
+        systemctl reboot
+        ;;
+
+    "$lock")
+        ## TODO Add your lockscreen command.
+        ;;
+
+    "$suspend")
+        systemctl suspend
+        ;;
+
+    "$log_out")
+	if [ "$DESKTOP_SESSION" = 'openbox' ]; then
+	    openbox --exit
+	fi
+        ;;
+
+    *) exit 1 ;;
+esac
