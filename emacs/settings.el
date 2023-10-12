@@ -106,6 +106,15 @@
 ;; From emacs 29.1
 (setq show-paren-context-when-offscreen 'overlay)
 
+;; Select Font
+(cond
+ ((find-font (font-spec :name "Jetbrains Mono"))
+  (set-frame-font "Jetbrains Mono 13"))
+ ((find-font (font-spec :name "Montserrat"))
+  (set-frame-font "Montserrat 13"))
+ ((find-font (font-spec :name "Arial"))
+  (set-frame-font "Arial 13")))
+
 ;; personal function for windows
 (defun tt/wrap ()
   "Shortcut to open neotree directly on wrapper"

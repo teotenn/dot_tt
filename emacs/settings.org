@@ -140,6 +140,15 @@ file (=~/.emacs.d/init.el= or =emacs.el=):
 
 ;; From emacs 29.1
 (setq show-paren-context-when-offscreen 'overlay)
+
+;; Select Font
+(cond
+ ((find-font (font-spec :name "Jetbrains Mono"))
+  (set-frame-font "Jetbrains Mono 13"))
+ ((find-font (font-spec :name "Montserrat"))
+  (set-frame-font "Montserrat 13"))
+ ((find-font (font-spec :name "Arial"))
+  (set-frame-font "Arial 13")))
 #+END_SRC
 
 ** Personal funcs
