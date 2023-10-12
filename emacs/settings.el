@@ -109,11 +109,11 @@
 ;; Select Font
 (cond
  ((find-font (font-spec :name "Jetbrains Mono"))
-  (set-frame-font "Jetbrains Mono 13"))
+  (set-frame-font "Jetbrains Mono 12"))
  ((find-font (font-spec :name "Montserrat"))
-  (set-frame-font "Montserrat 13"))
- ((find-font (font-spec :name "Arial"))
-  (set-frame-font "Arial 13")))
+  (set-frame-font "Montserrat 12"))
+ ((find-font (font-spec :name "Cascadia Mono"))
+  (set-frame-font "Monospace 13")))
 
 ;; personal function for windows
 (defun tt/wrap ()
