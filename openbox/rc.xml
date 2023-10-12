@@ -232,11 +232,21 @@
       </action>
     </keybind>
     <!-- Keybindings for running applications -->
+    <keybind key="W-x">
+      <action name="Rofi Scripts">
+        <startupnotify>
+          <enabled>false</enabled>
+          <name>rofi scripts menu</name>
+        </startupnotify>
+        <command>~/Code/dot_tt/bash/scripts/rofi-scripts</command>
+      </action>
+    </keybind>
+    <!-- Keybindings for running applications -->
     <keybind key="W-space">
       <action name="Execute">
         <startupnotify>
           <enabled>false</enabled>
-          <name>rofi menu</name>
+          <name>rofi apps menu</name>
         </startupnotify>
         <command>~/Code/dot_tt/bash/scripts/rofi-drun</command>
       </action>
