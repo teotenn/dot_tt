@@ -106,17 +106,6 @@
 ;; From emacs 29.1
 (setq show-paren-context-when-offscreen 'overlay)
 
-;; Select Font
-(defun tt/find-font ()
-  (cond
-   ((find-font (font-spec :name "Jetbrains Mono"))
-    (set-frame-font "Jetbrains Mono 12"))
-   ((find-font (font-spec :name "Montserrat"))
-    (set-frame-font "Montserrat 12"))
-   ((find-font (font-spec :name "Cascadia Mono"))
-    (set-frame-font "Monospace 13"))))
-(tt/find-font)
-
 ;; personal function for windows
 (defun tt/wrap ()
   "Shortcut to open neotree directly on wrapper"
@@ -139,6 +128,46 @@ If a region is selected, continues the selection from the cursor."
   (move-end-of-line arg))
 
 (define-key global-map (kbd "C-c j") #'tt/select-lines)
+
+;; copy symbol at point
+(defun tt/copy-symbol-at-point ()
+  "Copy symbol at point without killing it."
+  (interactive)
+  (kill-new (thing-at-point 'symbol)))
+
+(define-key global-map (kbd "C-c c") #'tt/copy-symbol-at-point)
+
+;; Select font
+(defun tt/set-font-if-found (family font size)
+  "If the font is installed, sets it globally for the session,
+   given a `family' name, `set-frame-font' the `font' by its name and `size'"
+  (let ((selected-font (format "%s %s" font size)))
+  (find-font (font-spec :name family))
+  (set-frame-font selected-font)))
+
+;; My pre-selected font
+(tt/set-font-if-found "Jetbrains" "Jetbrains Mono" 12)
+
+(defun tt/switch-font (arg)
+  "Switches fonts from a pre-defined list of `arg' size, or 12 by default.
+
+   The list and details of the fonts has to be defined within the function
+   based on personal choice."
+  (interactive "P")
+  (let* ((list-fonts '("Jetbrains" "Montserrat" "Monospace"))
+	 (font-size (or arg 12))
+	 (selected-font (ido-completing-read "Select font: " list-fonts)))
+    (cond
+     ((< font-size 7)
+      (message "Size selected is too small!"))
+     ((string= selected-font "Jetbrains")
+      (tt/set-font-if-found "Jetbrains" "Jetbrains Mono" font-size))
+     ((string= selected-font "Montserrat")
+      (tt/set-font-if-found "Montserrat" "Montserrat" font-size))
+     ((string= selected-font "Monospace")
+      (tt/set-font-if-found "Cascadia Mono" "Monospace" font-size)))))
+
+(global-set-key (kbd "M-<f2> f") 'tt/switch-font)
 
 ;; Dictionaries
 (use-package flyspell
@@ -195,9 +224,10 @@ If a region is selected, continues the selection from the cursor."
 			'(:key "C-x C-o" :description "delete-blank-lines")
 			'(:key "C-x n" :description "narrow menu")
 			'(:key "C-x w" :description "widen")
+			'(:key "C-c c" :description "tt/copy-symbol-at-point")
 			'(:key "M-u" :description "make-upcase-at-point")
 			'(:key "C-x C-u" :description "upcase-region")))
-(global-set-key (kbd "C-c c") 'cheatsheet-show)
+(global-set-key (kbd "C-c s") 'cheatsheet-show)
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode)
