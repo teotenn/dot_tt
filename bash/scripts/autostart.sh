@@ -22,8 +22,10 @@ if [ -f /usr/bin/conky ] || [ -f ~/.guix-profile/bin/conky ]; then
 fi
 
 ## Tint2
-if [ -f /usr/bin/tint2 ] || [ -f ~/.guix-profile/bin/tint2 ]; then
-    tint2 -c /home/teoten/Code/dot_tt/tint2/minima/minima.tint2rc &
+if [ "$DESKTOP_SESSION" != 'awesome' ]; then
+    if [ -f /usr/bin/tint2 ] || [ -f ~/.guix-profile/bin/tint2 ]; then
+tint2 -c /home/teoten/Code/dot_tt/tint2/minima/minima.tint2rc &
+    fi
 fi
 
 ## Emacs at the end
