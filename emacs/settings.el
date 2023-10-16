@@ -24,13 +24,6 @@
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
 
-;; Keybindings to toggle 
-(global-set-key (kbd "M-<f2> n") 'display-line-numbers-mode)
-(global-set-key (kbd "M-<f2> t") 'tool-bar-mode)
-(global-set-key (kbd "M-<f2> s") 'scroll-bar-mode)
-(global-set-key (kbd "M-<f2> m") 'menu-bar-mode)
-					;(global-set-key (kbd "C-<f2> N") 'prog-mode-display-line-numbers-mode)
-
 ;; Allows mark-type-delete
 (delete-selection-mode t)
 
@@ -46,12 +39,6 @@
 
 ;; show-paren-mode
 (show-paren-mode 1)
-
-;; Some interesting moving through buffers
-(global-set-key (kbd "C-x <up>") 'windmove-up)
-(global-set-key (kbd "C-x <down>") 'windmove-down)
-(global-set-key (kbd "C-x <left>") 'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
 
 ;; Save bookmars upon adding each
 (setq bookmark-save-flag 1)
@@ -127,15 +114,11 @@ If a region is selected, continues the selection from the cursor."
     (set-mark-command nil))
   (move-end-of-line arg))
 
-(define-key global-map (kbd "C-c j") #'tt/select-lines)
-
 ;; copy symbol at point
 (defun tt/copy-symbol-at-point ()
   "Copy symbol at point without killing it."
   (interactive)
   (kill-new (thing-at-point 'symbol)))
-
-(define-key global-map (kbd "C-c c") #'tt/copy-symbol-at-point)
 
 ;; Select font
 (defun tt/set-font-if-found (family font size)
@@ -167,6 +150,35 @@ If a region is selected, continues the selection from the cursor."
      ((string= selected-font "Monospace")
       (tt/set-font-if-found "Cascadia Mono" "Monospace" font-size)))))
 
+;; Keybindings to toggle 
+(global-set-key (kbd "M-<f2> n") 'display-line-numbers-mode)
+(global-set-key (kbd "M-<f2> t") 'tool-bar-mode)
+(global-set-key (kbd "M-<f2> s") 'scroll-bar-mode)
+(global-set-key (kbd "M-<f2> m") 'menu-bar-mode)
+
+(defvar toggle-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map "n" 'display-line-numbers-mode)
+    (define-key map "t" 'tool-bar-mode)
+    (define-key map "s" 'scroll-bar-mode)
+    (define-key map "m" 'menu-bar-mode)
+    map)
+  "Key map for toggling")
+(global-set-key (kbd "<f9>") toggle-keymap)
+
+;; tt-edit-mode
+(require 'tt-edit-mode)
+(global-set-key (kbd "C-c e") tt-edit-mode-keymap)
+
+;; Some interesting moving through buffers
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+(global-set-key (kbd "C-x <left>") 'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+
+;; other
+(define-key global-map (kbd "C-c j") #'tt/select-lines)
+(define-key global-map (kbd "C-c c") #'tt/copy-symbol-at-point)
 (global-set-key (kbd "M-<f2> f") 'tt/switch-font)
 
 ;; Dictionaries
@@ -537,8 +549,8 @@ utils::assignInNamespace(\"q\",
 
   ;; Load the theme of your choice.
   (load-theme 'modus-vivendi-tinted :no-confirm)
-  (define-key global-map (kbd "M-<f2> z") #'modus-themes-toggle)
-  (define-key global-map (kbd "M-<f2> Z") #'modus-themes-select))
+  (define-key toggle-keymap (kbd "z") #'modus-themes-toggle)
+  (define-key toggle-keymap (kbd "Z") #'modus-themes-select))
 
 (use-package counsel
   :after ivy
