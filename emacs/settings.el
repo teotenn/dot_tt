@@ -621,15 +621,17 @@ utils::assignInNamespace(\"q\",
 (use-package esh-autosuggest
   :hook (eshell-mode . esh-autosuggest-mode))
 
+(setq dired-listing-switches "-aBhl --group-directories-first")
+
 (use-package all-the-icons-dired
   :defer t
-  :hook   (dired-mode . all-the-icons-dired-mode)
-  )
+  :hook   (dired-mode . all-the-icons-dired-mode))
 
 (use-package dired-sidebar
   :config
   (setq dired-sidebar-width 25)
-  (setq dired-sidebar-subtree-line-prefix "__")
+  (setq dired-sidebar-subtree-line-prefix "_")
+  (setq dired-sidebar-refresh-on-project-switch nil)
   (setq dired-sidebar-theme 'icons))
 
 (require 'dired-ranger)
