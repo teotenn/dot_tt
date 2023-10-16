@@ -113,7 +113,7 @@
   (set-frame-font selected-font)))
 
 ;; My pre-selected font
-(tt/set-font-if-found "Jetbrains" "Jetbrains Mono" 12)
+(tt/set-font-if-found "Jetbrains" "Jetbrains Mono" 10)
 
 (defun tt/switch-font (arg)
   "Switches fonts from a pre-defined list of `arg' size, or 12 by default.
@@ -122,7 +122,7 @@
    based on personal choice."
   (interactive "P")
   (let* ((list-fonts '("Jetbrains" "Montserrat" "Monospace"))
-	 (font-size (or arg 12))
+	 (font-size (or arg 10))
 	 (selected-font (ido-completing-read "Select font: " list-fonts)))
     (cond
      ((< font-size 7)
@@ -142,6 +142,7 @@
     (define-key map "s" 'scroll-bar-mode)
     (define-key map "m" 'menu-bar-mode)
     (define-key map "f" 'tt/switch-font)
+    (define-key map "d" 'dired-sidebar-toggle-sidebar)
     map)
   "Key map for toggling")
 (global-set-key (kbd "<f9>") toggle-keymap)
@@ -619,6 +620,17 @@ utils::assignInNamespace(\"q\",
 
 (use-package esh-autosuggest
   :hook (eshell-mode . esh-autosuggest-mode))
+
+(use-package all-the-icons-dired
+  :defer t
+  :hook   (dired-mode . all-the-icons-dired-mode)
+  )
+
+(use-package dired-sidebar
+  :config
+  (setq dired-sidebar-width 25)
+  (setq dired-sidebar-subtree-line-prefix "__")
+  (setq dired-sidebar-theme 'icons))
 
 (require 'dired-ranger)
 
