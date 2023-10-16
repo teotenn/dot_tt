@@ -151,11 +151,6 @@ If a region is selected, continues the selection from the cursor."
       (tt/set-font-if-found "Cascadia Mono" "Monospace" font-size)))))
 
 ;; Keybindings to toggle 
-(global-set-key (kbd "M-<f2> n") 'display-line-numbers-mode)
-(global-set-key (kbd "M-<f2> t") 'tool-bar-mode)
-(global-set-key (kbd "M-<f2> s") 'scroll-bar-mode)
-(global-set-key (kbd "M-<f2> m") 'menu-bar-mode)
-
 (defvar toggle-keymap
   (let ((map (make-sparse-keymap)))
     (define-key map "n" 'display-line-numbers-mode)
@@ -175,11 +170,6 @@ If a region is selected, continues the selection from the cursor."
 (global-set-key (kbd "C-x <down>") 'windmove-down)
 (global-set-key (kbd "C-x <left>") 'windmove-left)
 (global-set-key (kbd "C-x <right>") 'windmove-right)
-
-;; other
-(define-key global-map (kbd "C-c j") #'tt/select-lines)
-(define-key global-map (kbd "C-c c") #'tt/copy-symbol-at-point)
-(global-set-key (kbd "M-<f2> f") 'tt/switch-font)
 
 ;; Dictionaries
 (use-package flyspell
@@ -644,6 +634,19 @@ utils::assignInNamespace(\"q\",
 
 (use-package esh-autosuggest
   :hook (eshell-mode . esh-autosuggest-mode))
+
+(require 'dired-ranger)
+
+;; My keybindings
+(defvar tt-dired-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map "c" 'dired-ranger-copy)
+    (define-key map "p" 'dired-ranger-paste)
+    (define-key map "m" 'dired-ranger-move)
+    map)
+  "Key map for dired extensions")
+
+(define-key dired-mode-map (kbd "C-c t") tt-dired-keymap)
 
 ;; Using garbage magic hack.
  (use-package gcmh
