@@ -148,22 +148,6 @@ file (=~/.emacs.d/init.el= or =emacs.el=):
 ;; Personal registers
 (set-register ?w '(buffer . "workflow.org"))
 
-;; select lines
-(defun tt/select-lines (arg)
-  "Select the current line and ARG lines IF no region is selected.
-If a region is selected, continues the selection from the cursor."
-  (interactive "p")
-  (when (not (use-region-p))
-    (forward-line 0)
-    (set-mark-command nil))
-  (move-end-of-line arg))
-
-;; copy symbol at point
-(defun tt/copy-symbol-at-point ()
-  "Copy symbol at point without killing it."
-  (interactive)
-  (kill-new (thing-at-point 'symbol)))
-
 ;; Select font
 (defun tt/set-font-if-found (family font size)
   "If the font is installed, sets it globally for the session,
@@ -203,6 +187,7 @@ If a region is selected, continues the selection from the cursor."
     (define-key map "t" 'tool-bar-mode)
     (define-key map "s" 'scroll-bar-mode)
     (define-key map "m" 'menu-bar-mode)
+    (define-key map "f" 'tt/switch-font)
     map)
   "Key map for toggling")
 (global-set-key (kbd "<f9>") toggle-keymap)
