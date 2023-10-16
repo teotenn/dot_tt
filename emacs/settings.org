@@ -825,13 +825,6 @@ More on python on emacs [[https://realpython.com/emacs-the-best-python-editor/#e
   :defer t
   :hook   (dired-mode . all-the-icons-dired-mode))
 
-(use-package dired-sidebar
-  :config
-  (setq dired-sidebar-width 25)
-  (setq dired-sidebar-subtree-line-prefix "_")
-  (setq dired-sidebar-refresh-on-project-switch nil)
-  (setq dired-sidebar-theme 'icons))
-
 (require 'dired-ranger)
 
 ;; My keybindings
