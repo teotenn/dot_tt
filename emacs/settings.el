@@ -142,7 +142,7 @@
     (define-key map "s" 'scroll-bar-mode)
     (define-key map "m" 'menu-bar-mode)
     (define-key map "f" 'tt/switch-font)
-    (define-key map "d" 'dired-sidebar-toggle-sidebar)
+    (define-key map "d" 'neotree-toggle)
     map)
   "Key map for toggling")
 (global-set-key (kbd "<f9>") toggle-keymap)
@@ -266,7 +266,9 @@
 ;;   (setq inferior-lisp-program "sbcl"))
 
 ;; neotree
-(use-package neotree)
+(use-package neotree
+  :config
+  (setq neo-theme 'icons))
 
 ;; htmlize to improve rendering of source code blocks
 (use-package htmlize)
