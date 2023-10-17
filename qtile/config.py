@@ -24,23 +24,24 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from libqtile import bar, layout, widget
+from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 import os
+import subprocess
 
 mod = "mod4"
 terminal = guess_terminal()
 tt_scripts = os.path.expanduser("~/Code/dot_tt/bash/scripts/")
 
 keys = [
-    ## PERSONAL KEYS
+    ## Apps
+    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    ## ROFI
     Key([mod], "Space", lazy.spawn(tt_scripts + "rofi-drun")),
     Key([mod], "q", lazy.spawn(tt_scripts + "rofi-power-menu")),
     Key([mod], "x", lazy.spawn(tt_scripts + "rofi-scripts")),
-    Key([mod], "z", lazy.spawn("thunar")),
-    ## DEFAULTS MODIFIED
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     # Switch between windows
@@ -72,23 +73,25 @@ keys = [
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
-    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     # Toggle between different layouts as defined below
-    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
-    Key([mod], "w", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod, "shift"], "n", lazy.next_layout(), desc="Toggle between layouts"),
+    Key([mod, "shift"], "p", lazy.prev_layout(), desc="Toggle between layouts"),
+    Key([mod, "shift"], "w", lazy.window.kill(), desc="Kill focused window"),
     Key(
-        [mod],
+        [mod, "shift"],
         "f",
         lazy.window.toggle_fullscreen(),
         desc="Toggle fullscreen on the focused window",
     ),
+    Key([mod, "shift"], "s", lazy.window.toggle_minimize(), desc="Toggle minimize window"),
+    Key([mod, "shift"], "b", lazy.window.toggle_maximize(), desc="Toggle maximize window"),
     Key([mod], "t", lazy.window.toggle_floating(), desc="Toggle floating on the focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 ]
 
-groups = [Group(i) for i in "123456789"]
+groups = [Group(i) for i in "1234"]
 
 for i in groups:
     keys.extend(
@@ -137,38 +140,39 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
-# screens = [
-#     Screen(
-#         bottom=bar.Bar(
-#             [
-#                 widget.CurrentLayout(),
-#                 widget.GroupBox(),
-#                 widget.Prompt(),
-#                 widget.WindowName(),
-#                 widget.Chord(
-#                     chords_colors={
-#                         "launch": ("#ff0000", "#ffffff"),
-#                     },
-#                     name_transform=lambda name: name.upper(),
-#                 ),
-#                 widget.TextBox("default config", name="default"),
-#                 widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-#                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
-#                 # widget.StatusNotifier(),
-#                 widget.Systray(),
-#                 widget.Clock(format="%Y-%m-%d %a %I:%M %p"),
-#                 widget.QuickExit(),
-#             ],
-#             24,
-#             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-#             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
-#         ),
-#         # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
-#         # By default we handle these events delayed to already improve performance, however your system might still be struggling
-#         # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
-#         # x11_drag_polling_rate = 60,
-#     ),
-# ]
+screens = [
+    Screen(
+        bottom=bar.Bar(
+            [
+                widget.CurrentLayout(),
+                widget.GroupBox(),
+                # widget.TextBox(" | "),
+                widget.TaskList(),
+                widget.Prompt(),
+                widget.Chord(
+                    chords_colors={
+                        "launch": ("#ff0000", "#ffffff"),
+                    },
+                    name_transform=lambda name: name.upper(),
+                ),
+                # widget.TextBox("default config", name="default"),
+                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+                # widget.StatusNotifier(),
+                widget.Systray(),
+                widget.Clock(format="%a %d/%m %H:%M"),
+                # widget.QuickExit(),
+            ],
+            24,
+            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+        ),
+        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
+        # By default we handle these events delayed to already improve performance, however your system might still be struggling
+        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
+        # x11_drag_polling_rate = 60,
+    ),
+]
 
 # Drag floating layouts.
 mouse = [
@@ -217,7 +221,9 @@ wl_input_rules = None
 wmname = "LG3D"
 
 # My Autostart
-# @hook.subscribe.startup_once
-# def autostart_once():
-#     subprocess.run(tt_scripts + 'autostart.sh')
+@hook.subscribe.startup_once
+def autostart():
+    script = tt_scripts + 'autostart.sh'
+    subprocess.run([script])
 
+#
