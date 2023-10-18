@@ -24,7 +24,7 @@ chosen=$(printf '%s;%s;%s;%s;%s\n' "$power_off" "$reboot" "$lock" "$suspend" \
 		    -p "Uptime: $uptime" \
 		    -mesg "Uptime: $uptime" \
 		    -sep ';' \
-		    -theme $HOME/Code/dot_tt/rofi/style-2.rasi \
+		    -theme ~/Code/dot_tt/rofi/transparent1.rasi \
 		    -selected-row 3)
 
 case "$chosen" in
