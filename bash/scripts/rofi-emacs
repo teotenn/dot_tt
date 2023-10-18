@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+kill_server() {
+    local SERVER_DIR="/run/user/1000/emacs/"
+
+    usage()
+    {
+        cat <<EOT
+Usage '$0 kill':
+- -d <dir> or --server-dir <dir>
+  - Specify the directory where Emacs server sockets live, default is '$SERVER_DIR'.
+EOT
+        exit 1
+    }
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -d|--server-dir   ) shift; SERVER_DIR="$1";;
+            -h|--help         ) usage;;
+            *                 ) usage;;
+        esac
+        shift
+    done
+
+    local -a sockets
+    local socket_name
+
+    mapfile -t sockets < <(command ls -1 "$SERVER_DIR")
+
+    socket_name=$(printf '%s\n' "${sockets[@]}" | rofi -dmenu -p "Select the server to kill")
+    socket_path="${SERVER_DIR}${socket_name}"
+
+    emacsclient --eval '(kill-emacs)' --socket-name="$socket_path"
+}
+
+
+emacs_client="0) emacsclient --create-frame"
+emacs_raw="1) emacs"
+emacs_q="2) emacs --no-init-file"
+emacs_client_nw="3) emacsclient -nw"
+emacs_nw="4) emacs -nw"
+emacs_nw_q="5) emacs -nw --no-init-file"
+emacs_debug="6) emacs --debug-init"
+kill_server="Kill server"
+restart_server="Restart server"
+start_server="Start server"
+
+
+chosen=$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" \
+		"$emacs_client" "$emacs_raw" "$emacs_q" \
+		"$emacs_client_nw" "$emacs_nw" "$emacs_nw_q" \
+		"$emacs_debug" \
+		"$start_server" "$kill_server" "$restart_server" \
+	     | rofi -theme ~/Code/dot_tt/rofi/transparent1.rasi \
+		    -dmenu -selected-row 0)
+
+case $chosen in
+    "$emacs_client")
+	emacsclient -c &
+	;;
+
+    "$emacs_raw")
+	emacs &
+	;;
+
+    "$emacs_q")
+	emacs -q &
+	;;
+
+    "$emacs_client_nw")
+	x-terminal-emulator -e emacsclient -nw &
+	;;
+
+    "$emacs_nw")
+	x-terminal-emulator -e emacs -nw &
+	;;
+
+    "$emacs_nw_q")
+	x-terminal-emulator -e emacs -q -nw &
+	;;
+
+    "$emacs_debug")
+	emacs --debug-init &
+	;;
+
+    "$start_server")
+	emacs --daemon &
+	;;
+
+    "$kill_server")
+	kill_server
+	;;
+
+    "$restart_server")
+	kill_server; emacs --daemon &
+	;;
+esac
