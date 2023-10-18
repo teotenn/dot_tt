@@ -42,6 +42,8 @@ keys = [
     Key([mod], "Space", lazy.spawn(tt_scripts + "rofi-drun")),
     Key([mod], "q", lazy.spawn(tt_scripts + "rofi-power-menu")),
     Key([mod], "x", lazy.spawn(tt_scripts + "rofi-scripts")),
+    Key([mod], "e", lazy.spawn(tt_scripts + "rofi-emacs")),
+    Key([mod], "w", lazy.spawn(tt_scripts + "rofi-web-search")),
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     # Switch between windows
@@ -76,7 +78,7 @@ keys = [
     # Toggle between different layouts as defined below
     Key([mod, "shift"], "n", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod, "shift"], "p", lazy.prev_layout(), desc="Toggle between layouts"),
-    Key([mod, "shift"], "w", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod], "k", lazy.window.kill(), desc="Kill focused window"),
     Key(
         [mod, "shift"],
         "f",
