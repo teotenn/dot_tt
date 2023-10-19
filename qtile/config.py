@@ -38,12 +38,13 @@ tt_scripts = os.path.expanduser("~/Code/dot_tt/bash/scripts/")
 keys = [
     ## Apps
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
+    Key([mod], "w", lazy.spawn("brave-browser")),
     ## ROFI
     Key([mod], "Space", lazy.spawn(tt_scripts + "rofi-drun")),
     Key([mod], "q", lazy.spawn(tt_scripts + "rofi-power-menu")),
     Key([mod], "x", lazy.spawn(tt_scripts + "rofi-scripts")),
     Key([mod], "e", lazy.spawn(tt_scripts + "rofi-emacs")),
-    Key([mod], "w", lazy.spawn(tt_scripts + "rofi-web-search")),
+    Key([mod], "s", lazy.spawn(tt_scripts + "rofi-web-search")),
     # A list of available commands that can be bound to keys can be found
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
     # Switch between windows
