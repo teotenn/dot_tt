@@ -21,10 +21,9 @@
 declare -A URLS
 
 URLS=(
+  ["duckduckgo"]="https://www.duckduckgo.com/?q="
   ["google"]="https://www.google.com/search?q="
   ["bing"]="https://www.bing.com/search?q="
-  ["yahoo"]="https://search.yahoo.com/search?p="
-  ["duckduckgo"]="https://www.duckduckgo.com/?q="
   ["github"]="https://github.com/search?q="
   ["stackoverflow"]="http://stackoverflow.com/search?q="
   ["symbolhound"]="http://symbolhound.com/?q="
