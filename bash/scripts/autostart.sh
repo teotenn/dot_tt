@@ -7,8 +7,14 @@ fi
 
 ## xrandr
 sleep 2
-if [ -f /home/teoten/Code/dot_tt/bash/scripts/sirius_xrandr.sh ]; then
-    bash /home/teoten/Code/dot_tt/bash/scripts/sirius_xrandr.sh
+if [[ $HOSTNAME ==  *"eridani"* ]]; then
+    if [ -f /home/teoten/Code/dot_tt/bash/scripts/eridani-xrandr ]; then
+	bash /home/teoten/Code/dot_tt/bash/scripts/eridani-xrandr
+    fi
+elif [[ $HOSTNAME ==  *"sirius"* ]]; then
+    if [ -f /home/teoten/Code/dot_tt/bash/scripts/sirius_xrandr.sh ]; then
+	bash /home/teoten/Code/dot_tt/bash/scripts/sirius_xrandr.sh
+    fi
 fi
 
 ## conky
