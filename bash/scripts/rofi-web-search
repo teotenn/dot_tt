@@ -21,6 +21,7 @@
 declare -A URLS
 
 URLS=(
+    ["brave"]="https://search.brave.com/search?q="
   ["duckduckgo"]="https://www.duckduckgo.com/?q="
   ["google"]="https://www.google.com/search?q="
   ["bing"]="https://www.bing.com/search?q="

@@ -52,6 +52,8 @@ case "$chosen" in
 	    openbox --exit
 	elif [ "$DESKTOP_SESSION" = 'awesome' ]; then
 	    killall -9 awesome
+	elif [ "$DESKTOP_SESSION" = 'sway' ]; then
+	    swaymsg exit
 	elif [ "$DESKTOP_SESSION" = 'qtile' ]; then
 	    qtile cmd-obj -o cmd -f shutdown
 	fi
