@@ -10,6 +10,8 @@ file (=~/.emacs.d/init.el= or =emacs.el=):
  (expand-file-name "~/Code/dot_tt/emacs/settings.org"
                    user-emacs-directory))
 #+END_SRC
+
+Find system name with =(system-name)=
 ** Personal keybindings
    - *M-q* in <org-mode> ='toggle-truncate-lines=
    - *C-x arrows*  =windmove-(up/right/left/down arrows)=
