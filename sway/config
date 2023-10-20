@@ -1,3 +1,8 @@
+# Logo key. Use Mod1 for Alt.
+set $mod Mod4
+
+include ~/Code/dot_tt/sway/config.d/base.conf
+
 # Default config for sway
 #
 # Copy this to ~/.config/sway/config and edit it to your liking.
@@ -6,8 +11,7 @@
 
 ### Variables
 #
-# Logo key. Use Mod1 for Alt.
-set $mod Mod4
+
 
 # Home row direction keys, like vim
 # set $left h
@@ -154,6 +158,7 @@ exec ~/Code/dot_tt/bash/scripts/switch-bgs-swaybg
     bindsym $mod+Shift+s layout stacking
     bindsym $mod+Shift+w layout tabbed
     bindsym $mod+Shift+e layout toggle split
+    # bindsym $mod+Shift+d layout default
 
     # Make the current focus fullscreen
     bindsym $mod+Shift+f fullscreen
@@ -213,7 +218,7 @@ bar {
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+    status_command while date +'%Y-%m-%d %I:%M %p'; do sleep 1; done
 
     colors {
         statusline #ffffff
@@ -234,3 +239,6 @@ bindsym $mod+s exec ~/Code/dot_tt/bash/scripts/rofi-web-search
 
 ## Apps
 bindsym $mod+w exec brave-browser
+
+## Startup
+exec --no-startup-id python3 ~/Code/dot_tt/sway/scripts/inactive-windows-transparency.py -o 0.8
