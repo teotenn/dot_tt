@@ -82,7 +82,6 @@
     },
     "memory": {
         "format": " {: >3}%",
-        "on-click": "swaymsg reload & pkill waybar & waybar",
     },
     "temperature": {
   	"thermal-zone": 2,
