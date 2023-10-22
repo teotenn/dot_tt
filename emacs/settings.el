@@ -149,7 +149,7 @@
 
 ;; tt-edit-mode
 (require 'tt-edit-mode)
-(global-set-key (kbd "C-c e") tt-edit-mode-keymap)
+(global-set-key (kbd "<f12>") tt-edit-mode-keymap)
 
 ;; Some interesting moving through buffers
 (global-set-key (kbd "C-x <up>") 'windmove-up)
