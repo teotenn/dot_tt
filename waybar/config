@@ -1,13 +1,13 @@
 {
     "layer": "top", // Waybar at top layer
-    "position": "bottom", // Waybar position (top|bottom|left|right)
+    "position": "top", // Waybar position (top|bottom|left|right)
     "height": 30,
-    "margin": "1 5 1 5",
+    "margin": "0 0 0 0",
     //"width": 1350, // Waybar width
     // Choose the order of the modules idle_inhibitor
-    "modules-left": ["custom/launcher", "custom/swap", "tray", "sway/mode", "sway/window"],
-    "modules-center": ["sway/workspaces"],
-    "modules-right": ["backlight", "pulseaudio", "custom/keyboard-layout", "temperature", "memory", "cpu", "battery", "network", "clock", "custom/power"], 
+    "modules-left": ["sway/mode", "sway/workspaces", "sway/window"],
+    "modules-center": [],
+    "modules-right": ["custom/keyboard-layout", "backlight", "pulseaudio", "temperature", "memory", "cpu", "battery", "network", "clock"], 
     
  // Modules configuration
  
@@ -15,19 +15,17 @@
         "disable-scroll": true,
         "all-outputs": true,
         "format": "{icon}",
-        // "format": "< %g >",
-        // "format_focused" : "< %g ● >",
         "format-icons": {
-        "1": "",
-        "2": "",
-		"3": "",
-		"4": "",
-		"5": "",
-		"6": "",
-		"7": "",
-		"8": "",
-		"9": "",
-		"10": "",
+        "1": "1", // "",
+        "2": "2", // "",
+	"3": "3", // "",
+	"4": "4", // "",
+	"5": "5", // "",
+	"6": "6", // "",
+	"7": "7", // "",
+	"8": "8", // "",
+	"9": "9", // "",
+	"10": "10", // "",
         }
     },
     "custom/swap": {
@@ -37,17 +35,6 @@
     },    
     "sway/window": {
         "format": "[ {app_id} ]",
-    },
-    "idle_inhibitor": {
-        "format": "{icon}",
-       "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
-    },
-    "tray": {
-        "icon-size": 14,
-        "spacing": 5
     },
     "clock": {
         "format": "  {:%b-%d :%H:%M}",
@@ -77,11 +64,12 @@
         "interval": 60
     },
     "cpu": {
-        "format": "﬙ {usage: >3}%",
-        "on-click": "kitty -e htop"
+        "format": " {usage: >3}%",
+        "on-click": "emacsclient -c -e '(proced)'"
     },
     "memory": {
-        "format": " {: >3}%",
+        "format": "🖴 {: >3}%",
+	"on-click": "kitty -e htop"
     },
     "temperature": {
   	"thermal-zone": 2,
@@ -91,12 +79,9 @@
         "format": "  {temperatureC}°C"
     },
     "backlight": {
-        // "device": "acpi_video1",
         "format": "{icon} {percent: >3}%",
         "format-icons": ["", ""],
-        // "on-scroll-down": "brightnessctl -c backlight set 5%-",
         "on-scroll-down": "light -A 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob",
-        // "on-scroll-up": "brightnessctl -c backlight set +5%"
         "on-scroll-up": "light -U 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob"
     },
     "battery": {
@@ -109,13 +94,11 @@
         "format-icons": ["", "", "", "", ""]
     },
      "network": {
-        // "interface": "wlp2s0", // (Optional) To force the use of this interface
         "format": "⚠  Disabled",
         "format-wifi": "  {essid}",
-        // "format-ethernet": " {ifname}: {ipaddr}/{cidr}",
+        "format-ethernet": " {ifname}: {ipaddr}/{cidr}",
         "format-ethernet": "  Wired",
         "format-disconnected": "⚠  Disconnected",
-        // "on-click": "alacritty -e nmtui"
         "on-click": "nm-connection-editor"
     },
     "pulseaudio": {
@@ -136,14 +119,6 @@
         "on-scroll-up": "pamixer -ui 2 && pamixer --get-volume > $SWAYSOCK.wob",
         "on-scroll-down": "pamixer -ud 2 && pamixer --get-volume > $SWAYSOCK.wob"
     },
-     "custom/pacman": {
-        "format": " {}",
-        "interval": 7200,                     // every two hours
-        "exec": "i=$(checkupdates); echo \"$i\" |wc -l; echo \"$i\" |column -t |tr '\n' '\r'",       // # of updates and tooltip details
-        "exec-if": "exit 0",                  // always run; consider advanced run conditions
-        "on-click": "alacritty -e sudo pacman -Syu", // update system
-        "signal": 8
-    },
     "custom/power": {
       	"format":"⏻",
        	"on-click": "exec ~/Code/dot_tt/bash/scripts/rofi-power-menu &",
@@ -158,11 +133,5 @@
       	"signal": 1, // SIGHUP
       	"tooltip": false,
         "on-click": "~/.config/waybar/scripts/keyhint.sh",
-},
-     "custom/launcher": {
-    	"format":" ",
-    	// "on-click": "exec nwg-drawer -c 7 -is 70 -spacing 23",
-	"on-click": "exec ~/Code/dot_tt/bash/scripts/rofi-drun &",
-    	"tooltip": false,
 },
 }

@@ -9,9 +9,9 @@ options=(
   ["3) Output"]="3) Output"
   ["4) Region"]="4) Region"
   ["1) Window"]="5) Window"
-  ["6) All to clipboard"]="2) All to clipboard"
-  ["7) Output to clipboard"]="3) Output to clipboard"
-  ["8) Region to clipboard"]="4) Region to clipboard"
+  ["6) All to clipboard"]="6) All to clipboard"
+  ["7) Output to clipboard"]="7) Output to clipboard"
+  ["8) Region to clipboard"]="8) Region to clipboard"
   ["5) Window to clipboard"]="5) Window to clipboard"
 )
 
