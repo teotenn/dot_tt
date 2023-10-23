@@ -1,3 +1,17 @@
+/* Vars not working, must pass values to each section */
+/* :root { */
+/*     --tune1 rgba(0, 123, 157); */
+/*     --tune2 rgba(0, 104, 131); */
+/*     --tune3 rgba(0, 84, 105); */
+/*     --tune4 rgba(0, 63, 80); */
+/*     --tune5 rgba(0, 43, 54); */
+/*     --tune6 rgba(0, 23, 29); */
+/*     --tune7 rgba(0, 2, 3); */
+/*     --tune8 rgba(0, 0, 0); */
+/*   --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; */
+/*   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; */
+/* } */
+
 * {
     /* `otf-font-awesome` is required to be installed for icons */
     font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
@@ -107,19 +121,67 @@ button:hover {
     margin-right: 0;
 }
 
-#clock {
-    background-color: #64727D;
+label:focus {
+    background-color: #000000;
 }
 
-#battery {
-    background-color: #ffffff;
-    color: #000000;
+#disk {
+    background-color: #964B00;
 }
 
-#battery.charging, #battery.plugged {
-    color: #ffffff;
-    background-color: #26A65B;
+/* #language { */
+/*     background-color: #007b9d; */
+/* } */
+
+#backlight {/* 1 */
+    background-color: #007b9d;
 }
+
+#pulseaudio {/* 2 */
+    background-color: #006883;
+}
+
+#pulseaudio.high {
+    color: #831b00;
+}
+
+#pulseaudio.optimal {
+    background-color: #006883;
+}
+
+#pulseaudio.medium {
+    background-color: rgba(0, 104, 131, 0.5);
+}
+
+#pulseaudio.muted, #pulseaudio.low {
+    background-color: #501100;
+    color: #006883;
+}
+
+#temperature {/* 3 */
+    background-color: #005469;
+}
+
+#temperature.critical {
+    background-color: #eb4d4b;
+}
+
+#memory {/* 4 */ 
+    background-color: #003f50;
+}
+
+#cpu {/* 5 */
+    background-color: #002b36;
+}
+
+#battery {/* 6 */
+    background-color: #00171d;
+}
+
+/* #battery.charging, #battery.plugged { */
+/*     color: #ffffff; */
+/*     background-color: #26A65B; */
+/* } */
 
 @keyframes blink {
     to {
@@ -138,43 +200,27 @@ button:hover {
     animation-direction: alternate;
 }
 
-label:focus {
-    background-color: #000000;
+#battery.low {
+    background-color: rgba(0, 23, 29, 0.5);
+    color: #ffd7e4;
 }
 
-#cpu {
-    background-color: #2ecc71;
+#battery.warning {
+    background-color: #ffd7e4;
     color: #000000;
 }
 
-#memory {
-    background-color: #9b59b6;
-}
-
-#disk {
-    background-color: #964B00;
-}
-
-#backlight {
-    background-color: #90b1b1;
-}
-
-#network {
-    background-color: #2980b9;
+#network {/* 7 */
+    background-color: #000304;
 }
 
 #network.disconnected {
-    background-color: #f53c3c;
+    background-color: rgba(0, 3, 4, 0.5);
+    color: #d90b0b;
 }
 
-#pulseaudio {
-    background-color: #f1c40f;
-    color: #000000;
-}
-
-#pulseaudio.muted {
-    background-color: #90b1b1;
-    color: #2a5c45;
+#clock {/* 8 */
+    background-color: #000000;
 }
 
 #wireplumber {
@@ -198,14 +244,6 @@ label:focus {
 
 #custom-media.custom-vlc {
     background-color: #ffa000;
-}
-
-#temperature {
-    background-color: #f0932b;
-}
-
-#temperature.critical {
-    background-color: #eb4d4b;
 }
 
 #tray {
@@ -248,11 +286,7 @@ label:focus {
 }
 
 #language {
-    background: #00b093;
-    color: #740864;
-    padding: 0 5px;
-    margin: 0 5px;
-    min-width: 16px;
+    background: rgba(0, 123, 157, 0.3);
 }
 
 #keyboard-state {

@@ -7,7 +7,7 @@
     // Choose the order of the modules idle_inhibitor
     "modules-left": ["sway/mode", "sway/workspaces", "sway/window"],
     "modules-center": [],
-    "modules-right": ["custom/keyboard-layout", "backlight", "pulseaudio", "temperature", "memory", "cpu", "battery", "network", "clock"], 
+    "modules-right": ["sway/language", "backlight", "pulseaudio", "temperature", "memory", "cpu", "battery", "network", "clock"], 
     
  // Modules configuration
  
@@ -67,30 +67,32 @@
         "format": " {usage: >3}%",
         "on-click": "emacsclient -c -e '(proced)'"
     },
-    "memory": {
+    "memory": {//4
         "format": "🖴 {: >3}%",
-	"on-click": "kitty -e htop"
+	"on-click": "kitty -e htop",
+	"tooltip-format": "{used:0.1f} / {total:0.1f} GiB"
     },
-    "temperature": {
+    "temperature": {//3
   	"thermal-zone": 2,
   	"hwmon-path": ["/sys/class/hwmon/hwmon2/temp1_input", "/sys/class/thermal/thermal_zone0/temp"],
-  	"critical-threshold": 80,
+  	"critical-threshold": 60,
   	"format-critical": "{temperatureC}°C ",
         "format": "  {temperatureC}°C"
     },
-    "backlight": {
+    "backlight": {//1
         "format": "{icon} {percent: >3}%",
         "format-icons": ["", ""],
-        "on-scroll-down": "light -A 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob",
-        "on-scroll-up": "light -U 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob"
+        "on-scroll-down": "light -U 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob",
+        "on-scroll-up": "light -A 5 && light -G | cut -d'.' -f1 > $SWAYSOCK.wob"
     },
-    "battery": {
+    "battery": {// 6
+        // "adapter": "AC0",
         "states": {
-            // "good": 95,
-            "warning": 30,
+	    "low": 50,
+            "warning": 25,
             "critical": 15
         },       
-        "format": "{icon} {capacity: >3}%",
+        "format": "{icon} {capacity}%",
         "format-icons": ["", "", "", "", ""]
     },
      "network": {
@@ -101,7 +103,7 @@
         "format-disconnected": "⚠  Disconnected",
         "on-click": "nm-connection-editor"
     },
-    "pulseaudio": {
+    "pulseaudio": {//2
         "scroll-step": 1,
         "format": "{icon} {volume: >3}%",
         "format-bluetooth": "{icon} {volume: >3}%",
@@ -114,6 +116,12 @@
             "portable": "",
             "car": "",
             "default": ["", ""]
+        },
+	"states": {
+	    "high": 100,
+            "optimal": 80,
+            "medium": 40,
+            "low": 5
         },
         "on-click": "pavucontrol",
         "on-scroll-up": "pamixer -ui 2 && pamixer --get-volume > $SWAYSOCK.wob",
@@ -133,5 +141,13 @@
       	"signal": 1, // SIGHUP
       	"tooltip": false,
         "on-click": "~/.config/waybar/scripts/keyhint.sh",
+},
+"sway/mode": {
+    "format": " {}",
+    "max-length": 50
+},
+    "sway/language": {
+        "format": " {flag}",
+        "on-click": "swaymsg input type:keyboard xkb_switch_layout next",	
 },
 }
