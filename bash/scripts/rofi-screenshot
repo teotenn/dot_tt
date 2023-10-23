@@ -1,6 +1,19 @@
 #!/usr/bin/env bash
-
-# Dependencies: grim slurp wl-clipboard
+#
+# Author: Manuel Teodoro
+# Contact: teotenn@proton.me
+#
+# Rofi menu for Screenshots on sway based on grim
+# 
+# Dependencies:
+#   -) grim
+#   -) slurp for selected area
+#   -) wl-clipboard for sending to clipboard
+#   -) imagemagic for picking a color
+# 
+# The menu could work only with grim to create output files of screens and windows.
+# The output images are send to the path in xdg-user-dir (see echo $xdg-user-dir PICTURES)
+# on the subfolder /Screenshots/
 
 declare -A options
 
@@ -13,6 +26,7 @@ options=(
   ["7) Output to clipboard"]="7) Output to clipboard"
   ["8) Region to clipboard"]="8) Region to clipboard"
   ["5) Window to clipboard"]="5) Window to clipboard"
+  ["9) Pick a color"]="9) Pick a color"
 )
 
 # List for rofi
@@ -61,6 +75,10 @@ main() {
     "8) Region to clipboard")
       grim -g "$(slurp)" - | wl-copy
       ;;
+
+    "9) Pick a color")
+	grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | wl-copy
+	;;
   esac
 }
 
