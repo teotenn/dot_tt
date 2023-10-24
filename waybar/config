@@ -1,11 +1,11 @@
 {
     "layer": "top", // Waybar at top layer
     "position": "top", // Waybar position (top|bottom|left|right)
-    "height": 30,
+    "height": 20,
     "margin": "0 0 0 0",
     //"width": 1350, // Waybar width
     // Choose the order of the modules idle_inhibitor
-    "modules-left": ["sway/mode", "sway/workspaces", "sway/window"],
+    "modules-left": ["sway/workspaces", "sway/window"],
     "modules-center": [],
     "modules-right": ["sway/language", "backlight", "pulseaudio", "temperature", "memory", "cpu", "battery", "network", "clock"], 
     
@@ -28,11 +28,6 @@
 	"10": "10", // "",
         }
     },
-    "custom/swap": {
-        "on-click": "~/Code/dot_tt/bash/scripts/switch-bgs-swaybg",
-        "tooltip": "Swap between backgrounds",
-        "format": "  "
-    },    
     "sway/window": {
         "format": "[ {app_id} ]",
     },
@@ -127,27 +122,8 @@
         "on-scroll-up": "pamixer -ui 2 && pamixer --get-volume > $SWAYSOCK.wob",
         "on-scroll-down": "pamixer -ud 2 && pamixer --get-volume > $SWAYSOCK.wob"
     },
-    "custom/power": {
-      	"format":"⏻",
-       	"on-click": "exec ~/Code/dot_tt/bash/scripts/rofi-power-menu &",
-      	"tooltip": false,
-   },
-   "custom/keyboard-layout": {
-      	"exec": "swaymsg -t get_inputs | grep -m1 'xkb_active_layout_name' | cut -d '\"' -f4",
-      	// Interval set only as a fallback, as the value is updated by signal
-      	"interval": 1,
-      	"format": "  {}", // Icon: keyboard
-      	// Signal sent by Sway key binding (~/.config/sway/key-bindings)
-      	"signal": 1, // SIGHUP
-      	"tooltip": false,
-        "on-click": "~/.config/waybar/scripts/keyhint.sh",
-},
-"sway/mode": {
-    "format": " {}",
-    "max-length": 50
-},
     "sway/language": {
         "format": " {flag}",
         "on-click": "swaymsg input type:keyboard xkb_switch_layout next",	
-},
+    },
 }

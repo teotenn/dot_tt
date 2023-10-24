@@ -22,10 +22,10 @@ exec ~/Code/dot_tt/bash/scripts/switch-bgs-swaybg
 #
 # Example configuration:
 #
-exec swayidle -w \
-         timeout 300 'swaylock -f -c 000000' \
-         timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-         before-sleep 'swaylock -f -c 000000'
+# exec swayidle -w \
+#          timeout 300 'swaylock -f -c 000000' \
+#          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+#          before-sleep 'swaylock -f -c 000000'
 #
 # This will lock your screen after 600 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
@@ -59,4 +59,4 @@ bar {
    swaybar_command waybar
 }
 
-include /etc/sway/config.d/*
+# include /etc/sway/config.d/*

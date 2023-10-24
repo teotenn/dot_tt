@@ -14,7 +14,7 @@
 
 * {
     /* `otf-font-awesome` is required to be installed for icons */
-    font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    font-family: FontAwesome, JetBrains, Helvetica, Arial, JuliaMono; /*Roboto, Helvetica, Arial, sans-serif;*/
     font-size: 13px;
 }
 
@@ -99,6 +99,7 @@ button:hover {
 #custom-media,
 #tray,
 #mode,
+#language,
 #idle_inhibitor,
 #scratchpad,
 #mpd {
@@ -129,9 +130,9 @@ label:focus {
     background-color: #964B00;
 }
 
-/* #language { */
-/*     background-color: #007b9d; */
-/* } */
+#language {/* 0 */
+    background-color: rgba(0, 123, 157, 0.3);
+}
 
 #backlight {/* 1 */
     background-color: #007b9d;
@@ -223,6 +224,7 @@ label:focus {
     background-color: #000000;
 }
 
+/* End of currently used widgets */
 #wireplumber {
     background-color: #fff0f5;
     color: #000000;
@@ -283,10 +285,6 @@ label:focus {
 
 #mpd.paused {
     background-color: #51a37a;
-}
-
-#language {
-    background: rgba(0, 123, 157, 0.3);
 }
 
 #keyboard-state {
