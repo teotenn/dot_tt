@@ -1,9 +1,0 @@
-#!/bin/sh
-## Change next line to change the theme
-theme=DarkBG/.
-
-
-wlpps=~/Pictures/wallpapers/$theme
-
-killall swaybg
-swaybg -o HDMI-A-1 -i $(find $wlpps -type f | shuf -n1) -m fill -o eDP-1 -i $(find $wlpps -type f | shuf -n1) -m fill &

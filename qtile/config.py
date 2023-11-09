@@ -230,3 +230,12 @@ def autostart():
     subprocess.run([script])
 
 #
+
+# Wayland
+from libqtile.backend.wayland import InputConfig
+
+wl_input_rules = {
+    "1267:12377:ELAN1300:00 04F3:3059 Touchpad": InputConfig(left_handed=True),
+    "*": InputConfig(left_handed=True, pointer_accel=True),
+    "type:keyboard": InputConfig(kb_options="ctrl:nocaps,compose:ralt"),
+}
