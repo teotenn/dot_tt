@@ -8,8 +8,8 @@ fi
 ## xrandr
 sleep 2
 if [[ $HOSTNAME ==  *"eridani"* ]]; then
-    if [ -f /home/teoten/Code/dot_tt/bash/scripts/eridani-xrandr ]; then
-	bash /home/teoten/Code/dot_tt/bash/scripts/eridani-xrandr
+    if [ -f /home/teoten/Code/dot_tt/bash/scripts/xorg-swap-bg ]; then
+	bash /home/teoten/Code/dot_tt/bash/scripts/xorg-swap-bg
     fi
 elif [[ $HOSTNAME ==  *"sirius"* ]]; then
     if [ -f /home/teoten/Code/dot_tt/bash/scripts/sirius_xrandr.sh ]; then
@@ -22,6 +22,8 @@ if [ -f /usr/bin/conky ] || [ -f ~/.guix-profile/bin/conky ]; then
     if [ "$DESKTOP_SESSION" = 'openbox' ]; then
 	conky -q -c ~/Code/dot_tt/conky/blue-white.conkyrc &
     elif [ "$DESKTOP_SESSION" = 'qtile' ]; then
+	conky -q -c ~/Code/dot_tt/conky/blue-white-qtile.conkyrc &
+    elif [ "$DESKTOP_SESSION" = 'awesome' ]; then
 	conky -q -c ~/Code/dot_tt/conky/blue-white-qtile.conkyrc &
     fi
 fi

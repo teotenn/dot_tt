@@ -1,26 +1,49 @@
 #!/bin/bash
 
+# ================================================================
+#  _______    _______     ____    _______    _______    __    ___
+# |__   __|  |   ____|   / _  \  |__   __|  |   ____|  |  \   | |
+#    | |     |  |__     | | | |     | |     |  |__     |   \  | |
+#    | |     |   __|    | | | |     | |     |   __|    | |\ \ | |
+#    | |     |  |___    | |_| |     | |     |  |___    | | \ \| |
+#    |_|     |______|    \____/     |_|     |______|   |_|  \___|
+# ----------------------------------------------------------------
+# Author: Manuel Teodoro Tenango
+# Email: teotenn@proton.me
+# Repo: https://github.com/teotenn/dotfiles_wayland
+# License: GPL-3
+#
+# My personal control script for xrandr options in eridani
+#
+#
+# ================================================================
 
-# Depending on the n monitors connected, setup certain parameters
-# Uses xwallpaper and xrandr, make sure to install it
-function n_mons(){
-    local nmons=()
-    local monitor
-    local PAPESDIR=$HOME/Pictures/wallpapers
-    local PAPE=$(find "$PAPESDIR" -type f | sort -R | tail -1)
-    for monitor in $(xrandr | awk '/ connected/ && /[[:digit:]]x[[:digit:]].*+/{print $1}'); do
-	nmons+=("$monitor")
-    done
-    if [ "${#nmons[@]}" -eq 1 ]; then
-	xrandr --output eDP-1 --mode 2880x1800 --scale 0.5x0.5 --rate 90.00
-	xwallpaper --output eDP-1 --center "$PAPE"
-    else
-	local PAPEB=$(find "$PAPESDIR" -type f | sort -R | tail -1)
+slimb_full="Slimbook Full"
+slimb_scaled="Slimbook Scaled in"
+dual_full="Dual screen full"
+dual_scaled="Dual screen scaled"
+
+chosen=$(printf "%s\n%s\n%s\n%s" \
+		"$dual_scaled" "$slimb_scaled" "$dual_full" "$dual_scaled" \
+		| rofi -theme ~/Code/dot_tt/rofi/transparent1.rasi \
+		       -dmenu -selected-row 0)
+
+case $chosen in
+    "$dual_scaled")
 	xrandr --output eDP-1 --mode 2880x1800 --scale 0.5x0.5 --rate 90.00 \
 	       --output HDMI-1 --mode 1920x1080 --right-of eDP-1
-	xwallpaper --output eDP-1 --center "$PAPE" --output HDMI-1 --zoom "$PAPEB"
-    fi
-}
+	;;
 
-n_mons
+    "$slimb_scaled")
+	xrandr --output eDP-1 --mode 2880x1800 --scale 0.5x0.5 --rate 90.00
+	;;
 
+    "$dual_full")
+	xrandr --output eDP-1 --mode 2880x1800 --scale 1x1 --rate 90.00 \
+	       --output HDMI-1 --mode 1920x1080 --right-of eDP-1
+	;;
+
+    "$dual_scaled")
+	xrandr --output eDP-1 --mode 2880x1800 --scale 1x1 --rate 90.00
+	;;
+esac

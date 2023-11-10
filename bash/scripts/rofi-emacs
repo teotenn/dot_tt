@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 kill_server() {
-    local SERVER_DIR="/run/user/1000/emacs/"
+    local SERVER_DIR="/run/user/1001/emacs/"
 
     usage()
     {
